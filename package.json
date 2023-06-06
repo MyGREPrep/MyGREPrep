@@ -1,0 +1,13 @@
+{
+  "name": "mygreprep",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "api",
+      "frontend"
+    ],
+    "nohoist": [
+      "**"
+    ]
+  }
+}
