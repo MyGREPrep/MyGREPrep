@@ -9,5 +9,16 @@
     "nohoist": [
       "**"
     ]
+  },
+  "devDependencies": {
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.2"
+  },
+  "lint-staged": {
+    "**/*.+(js|jsx|ts|tsx)": [
+      "bash -c 'yarn check-types'",
+      "yarn lint",
+      "yarn prettier:write"
+    ]
   }
 }
