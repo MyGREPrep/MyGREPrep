@@ -32,6 +32,7 @@
     }
   },
   "scripts": {
+    "commit": "git-cz",
     "prepare": "husky install",
     "check-types": "yarn workspaces run check-types",
     "lint": "yarn workspaces run lint",
