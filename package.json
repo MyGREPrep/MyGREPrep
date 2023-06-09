@@ -11,7 +11,7 @@
     ]
   },
   "devDependencies": {
-    "husky": "^8.0.3",
+    "husky": "^8.0.0",
     "lint-staged": "^13.2.2"
   },
   "lint-staged": {
@@ -20,5 +20,11 @@
       "yarn lint",
       "yarn prettier:write"
     ]
+  },
+  "scripts": {
+    "prepare": "husky install",
+    "check-types": "yarn workspaces run check-types",
+    "lint": "yarn workspaces run lint",
+    "prettier:write": "yarn workspaces run prettier:write"
   }
 }
