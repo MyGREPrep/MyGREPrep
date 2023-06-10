@@ -1,48 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Login from './App/Pages/Login';
-import { AuthContext } from './App/Context/AuthContext';
-import { useEffect, useState } from 'react';
-import Home from './App/Pages/Home';
-import Services from './App/Shared/Services';
 import { NavigationContainer } from '@react-navigation/native';
-import HomeNavigation from './App/Navigations/HomeNavigation';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Login from '../front-end/App/Pages/Login';
+import HomeScreen from '../front-end/App/Pages/HomeScreen';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
-
-  const [userData,setUserData]=useState();
-  useEffect(()=>{
-    Services.getUserAuth().then(resp=>{
-      console.log(resp); 
-      if(resp)
-      {
-        setUserData(resp)
-      }
-      else{
-        setUserData(null)
-      }
-    })
-  },[]) 
   return (
-    <View style={styles.container}>
-      <AuthContext.Provider 
-      value={{userData,setUserData}}>
-      {userData?
-      <NavigationContainer>
-          <HomeNavigation/>
-      </NavigationContainer>
-      :<Login/>}
-      
-      </AuthContext.Provider>
-      
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen options={{ headerShown: false }} name="Login" component={Login} />
+        <Stack.Screen name="Home" component={HomeScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
-    backgroundColor: '#F6F8FC',
-    
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
