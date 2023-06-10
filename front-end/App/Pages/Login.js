@@ -1,98 +1,130 @@
-import { View, Text, Image, StyleSheet } from 'react-native'
-import React, { useContext, useEffect, useState } from 'react'
-import Colors from '../Shared/Colors'
-import { Ionicons } from '@expo/vector-icons'; 
-import * as WebBrowser from 'expo-web-browser';
-import * as Google from 'expo-auth-session/providers/google';
-import { TouchableOpacity } from 'react-native';
-import { AuthContext } from '../Context/AuthContext';
-import Services from '../Shared/Services';
-export default function Login() {
-    WebBrowser.maybeCompleteAuthSession();
-    const [accessToken,setAccessToken]=useState();
-    const [userInfo,setUserInfo]=useState();
-    const {userData,setUserData}=useContext(AuthContext)
-    const [request, response, promptAsync] = Google.useAuthRequest({
-        androidClientId: '55959786226-e9frfu2d60hu3lt653blch82e4rhjsnp.apps.googleusercontent.com',
-        expoClientId:'55959786226-llk648p590tvtaoklnv4o89mtjtenecr.apps.googleusercontent.com'
-       
-      });
+import { useNavigation } from '@react-navigation/core'
+import React, { useEffect, useState } from 'react'
+import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { auth } from '../../firebase'
+import { getAuth,createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 
-      useEffect(()=>{
-        if(response?.type=='success')
-        {
-            setAccessToken(response.authentication.accessToken);
-           
-            getUserData();
-        }
-      },[response]);
+const LoginScreen = () => {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
-      const getUserData=async()=>{
-        try {
-            const resp = await fetch(
-              "https://www.googleapis.com/userinfo/v2/me",
-              {
-                headers: { Authorization: `Bearer ${response.authentication.accessToken}` },
-              }
-            );
-      
-            const user = await resp.json();
-            console.log("user Details",user) 
-            setUserInfo(user); 
-            setUserData(user);
-            await Services.setUserAuth(user);
-          } catch (error) {
-            // Add your own error handler here
-          }
+  const navigation = useNavigation()
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if (user) {
+        navigation.replace("Home")
       }
+    })
+
+    return unsubscribe
+  }, [])
+
+  console.log("AUTH",auth)
+  const handleSignUp = async () => {
+    try {
+      const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredentials.user;
+      console.log('Registered with:', user.email);
+    } catch (err) {
+      console.log("Error with sign up", err);
+    }
+  };
+
+  const handleLogin = async () => {
+    try {
+      const userCredentials = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredentials.user;
+      console.log('Logged in with:', user.email);
+    } catch (err) {
+      console.log("Error with login", err);
+    }
+  };
+
   return (
-    <View>
-        <Image source={require('./../Assets/Images/login.png')} />
-        <View style={styles.container}>
-             <Text style={styles.welcomeText}>Welcome to CodeBox</Text>
-            <Text style={{textAlign:'center',
-        marginTop:80,fontSize:20}}>Login/Signup</Text>
-            <TouchableOpacity style={styles.button} 
-            onPress={()=>promptAsync()}>
-            <Ionicons name="logo-google" size={24}
-             color="white" style={{marginRight:10}} />
-                <Text style={{color:Colors.white}}>Sign In with Google</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={()=>setUserData({
-              name:'Rahul Sanap',
-              picture:'https://cdn3d.iconscout.com/3d/premium/thumb/male-customer-call-service-portrait-6760890-5600697.png?f=webp',
-              email:'rahul@gmail.com',
-              id:1
-           })}>
-            <Text>Skip</Text>
-            </TouchableOpacity>
-        
-        </View>
-    </View>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior="padding"
+    >
+      <View style={styles.inputContainer}>
+        <TextInput
+          placeholder="Email"
+          value={email}
+          onChangeText={text => setEmail(text)}
+          style={styles.input}
+        />
+        <TextInput
+          placeholder="Password"
+          value={password}
+          onChangeText={text => setPassword(text)}
+          style={styles.input}
+          secureTextEntry
+        />
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          onPress={handleLogin}
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>Login</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={handleSignUp}
+          style={[styles.button, styles.buttonOutline]}
+        >
+          <Text style={styles.buttonOutlineText}>Register</Text>
+        </TouchableOpacity>
+      </View>
+    </KeyboardAvoidingView>
   )
 }
 
+export default LoginScreen
+
 const styles = StyleSheet.create({
-    container:{
-        paddingTop:40,
-        marginTop:-25,
-        backgroundColor:'#fff',
-        borderTopRightRadius:30,
-        borderTopLeftRadius:30
-    },
-    welcomeText:{
-        fontSize:35,
-        textAlign:'center',
-        fontWeight:'bold' 
-    },
-    button:{
-        backgroundColor:Colors.primary,
-        padding:10,
-        margin:30,
-        display:'flex',
-        flexDirection:'row',
-        justifyContent:'center',
-        alignItems:'center',
-        borderRadius:10
-    }
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  inputContainer: {
+    width: '80%'
+  },
+  input: {
+    backgroundColor: 'white',
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 10,
+    marginTop: 5,
+  },
+  buttonContainer: {
+    width: '60%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 40,
+  },
+  button: {
+    backgroundColor: '#0782F9',
+    width: '100%',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  buttonOutline: {
+    backgroundColor: 'white',
+    marginTop: 5,
+    borderColor: '#0782F9',
+    borderWidth: 2,
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: '700',
+    fontSize: 16,
+  },
+  buttonOutlineText: {
+    color: '#0782F9',
+    fontWeight: '700',
+    fontSize: 16,
+  },
 })
