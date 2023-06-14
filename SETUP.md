@@ -1,5 +1,18 @@
 # Requirements to run the project
 
+# Table of Contents
+
+- [Project Tools Installation](#project-tools-installation)
+  - [Node.js](#nodejs)
+  - [VSCode](#vscode)
+  - [Git](#git)
+  - [yarn](#yarn)
+  - [PostgreSQL](#postgresql)
+- [How to run the project](#how-to-run-the-project)
+  - [Monorepo](#monorepo)
+  - [Frontend](#frontend)
+  - [Backend](#backend)
+
 # Project Tools Installation
 
 ## Node.js
