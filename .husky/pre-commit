@@ -3,3 +3,6 @@
 
 cd api
 npx lint-staged
+
+cd ../frontend
+npx lint-staged
