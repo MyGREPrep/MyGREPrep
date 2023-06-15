@@ -20,17 +20,17 @@ export default function CourseContent({course,userProgress,courseType}) {
     const onChapterPress=(courseContent)=>{
       if(courseType=='text')
       {
-      navigation.navigate('course-chapter',
-      {courseContent:courseContent,
-        courseId:course.id, 
-      })
-    }
-    else{
-      navigation.navigate('play-video',
-      {
-        courseContent:courseContent,
-        courseId:course.id, 
-      })
+    //   navigation.navigate('course-chapter',
+    //   {courseContent:courseContent,
+    //     courseId:course.id, 
+    //   })
+    // }
+    // else{
+    //   navigation.navigate('play-video',
+    //   {
+    //     courseContent:courseContent,
+    //     courseId:course.id, 
+    //   })
     }
     }
   

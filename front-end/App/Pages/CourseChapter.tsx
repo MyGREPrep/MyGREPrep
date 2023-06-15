@@ -10,7 +10,7 @@ import { Button } from 'react-native';
 import ProgressBar from '../Components/ProgressBar';
 import Services from '../Shared/Services';
 import GlobalApi from '../Shared/GlobalApi';
-import { AuthContext } from '../Context/AuthContext';
+
 
 
 export default function CourseChapter() {
@@ -19,13 +19,12 @@ export default function CourseChapter() {
     const [chapter,setChapter]=useState([])
     const [run,setRun]=useState(false);
     const [progress,setProgress]=useState(0);
-    const {userData,setUserData}=useContext(AuthContext);
     let chapterRef;
    
     useEffect(()=>{
       
         setProgress(0);
-        setChapter(param.courseContent.Content)
+        // setChapter(param.courseContent.Content)
       
     },[])
     const onClickNext=(index)=>{
@@ -38,19 +37,19 @@ export default function CourseChapter() {
         {   
             let coursePro;
             const data={
-                data:{
-                    uid:userData.id,
-                    courseId:param.courseId,
-                    courseContentId:param.courseContent.id
-                }
+                // data:{
+                //     uid:userData.id,
+                //     courseId:param.courseId,
+                //     courseContentId:param.courseContent.id
+                // }
             }
 
             GlobalApi.setCourseProgress(data).then(resp=>{
-                navigation.navigate({
-                  name:'course-detail' ,
-                  params:{courseContentId:param.courseContent.id},
-                  merge:true 
-                })
+                // navigation.navigate({
+                //   name:'course-detail' ,
+                //   params:{courseContentId:param.courseContent.id},
+                //   merge:true 
+                // })
             })
            
        

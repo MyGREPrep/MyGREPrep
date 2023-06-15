@@ -9,7 +9,7 @@ export default function PlayVideo() {
     const [videoChapter,setVideoChapter]=useState([])
     const [playing, setPlaying] = useState(false);
     useEffect(()=>{
-        setVideoChapter(param.courseContent)
+        // setVideoChapter(param.courseContent)
     },[])
    
 
@@ -26,15 +26,15 @@ export default function PlayVideo() {
         </TouchableOpacity>
         {videoChapter?
         <View>
-             <Text style={{marginBottom:10,fontSize:20,fontWeight:'bold'}}>{videoChapter.name}</Text>
+             {/* <Text style={{marginBottom:10,fontSize:20,fontWeight:'bold'}}>{videoChapter.name}</Text> */}
              <YoutubePlayer
         height={220}
         play={playing}
-        videoId={videoChapter.videoUrl}
+        // videoId={videoChapter.videoUrl}
         onChangeState={onStateChange}
       />
             <Text style={{fontWeight:'bold',marginBottom:10}}>Description</Text>
-             <Text style={{lineHeight:20}}>{videoChapter?.description}</Text>
+             {/* <Text style={{lineHeight:20}}>{videoChapter?.description}</Text> */}
         </View>
             
         :null}

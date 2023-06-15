@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "education-app",
+    "name": "mygreprep-app",
     "slug": "codebox",
     "version": "1.0.0",
     "scheme": "codebox",
@@ -33,6 +33,9 @@
       "eas": {
         "projectId": "8df0d0df-8767-4c24-bbbf-1f99357ce6eb"
       }
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
     }
   }
 }

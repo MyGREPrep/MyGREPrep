@@ -29,8 +29,9 @@ export default function VideoCourseList() {
     }
     const onPressCourse=(course)=>{
         
-        navigation.navigate('course-detail',{courseData:course,
-        courseType:'video'})
+        // navigation.navigate('course-detail',{courseData:course,
+        // courseType:'video'})
+    
     }
   return (
     <View style={{marginTop:15}}>
@@ -40,7 +41,7 @@ export default function VideoCourseList() {
      horizontal={true}
      showsHorizontalScrollIndicator={false}
      renderItem={({item})=>(
-        <TouchableOpacity onPress={()=>onPressCourse(item)}>
+        <TouchableOpacity  onPress={() => onPressCourse}>
             <Image source={{uri:item.image}} 
             style={{width:210,height:120,
             marginRight:10,borderRadius:7}} /> 

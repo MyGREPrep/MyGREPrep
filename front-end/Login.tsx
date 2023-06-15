@@ -1,32 +1,48 @@
-import { useNavigation } from '@react-navigation/core'
+import { useNavigation,CommonActions } from '@react-navigation/core'
 import React, { useEffect, useState } from 'react'
-import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import { auth } from '../../firebase'
+import { KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { auth } from './firebase'
 import { getAuth,createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import SnackBar from 'react-native-snackbar-component'
 
-const LoginScreen = () => {
+
+const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [error,setError] = useState(false)
+  const [loginError, setLoginError] = useState(false)
+  const [msg, setMsg] = useState('')
 
   const navigation = useNavigation()
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (user) {
-        navigation.replace("Home")
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name: 'Home' }],
+          })
+        );
+    
       }
     })
 
     return unsubscribe
   }, [])
 
-  console.log("AUTH",auth)
   const handleSignUp = async () => {
     try {
       const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredentials.user;
-      console.log('Registered with:', user.email);
+      console.log('Registered with:', userCredentials);
+      if(user.email!==undefined){
+        console.log("Call to API")
+        //call to our api
+      }
     } catch (err) {
+      setError(true);
+      setMsg(err)
       console.log("Error with sign up", err);
     }
   };
@@ -35,21 +51,21 @@ const LoginScreen = () => {
     try {
       const userCredentials = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredentials.user;
-      console.log('Logged in with:', user.email);
+      console.log('Logged in with:', userCredentials);
     } catch (err) {
+      setLoginError(true);
       console.log("Error with login", err);
     }
   };
-
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior="padding"
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <View style={styles.inputContainer}>
         <TextInput
           placeholder="Email"
-          value={email}
+          value={email.trim()}
           onChangeText={text => setEmail(text)}
           style={styles.input}
         />
@@ -76,11 +92,17 @@ const LoginScreen = () => {
           <Text style={styles.buttonOutlineText}>Register</Text>
         </TouchableOpacity>
       </View>
+      {error?
+      <SnackBar visible={true} textMessage={'Sign up error'} backgroundColor='#FF0000' actionHandler={()=>{setError(false)}} accentColor='#FFFFFF' actionText="okay"/>:''}
+       {loginError?
+      <SnackBar visible={true} textMessage={'Login Error, please check your credentials'} backgroundColor='#FF0000' actionHandler={()=>{setLoginError(false)}} accentColor='#FFFFFF' actionText="okay"/>:''}
     </KeyboardAvoidingView>
+
+   
   )
 }
 
-export default LoginScreen
+export default Login
 
 const styles = StyleSheet.create({
   container: {
