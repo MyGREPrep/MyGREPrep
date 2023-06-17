@@ -1,3 +1,4 @@
+import { User } from "../entities/User";
 import { DataSource } from "typeorm";
 
 export const dataSource = new DataSource({
@@ -7,5 +8,6 @@ export const dataSource = new DataSource({
   password: process.env.POSTGRES_PASSWORD,
   logging: true,
   synchronize: true,
+  entities: [User],
   // migrations: [path.join(__dirname, "./migrations/*")],
 });

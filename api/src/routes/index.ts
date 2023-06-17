@@ -1,3 +1,4 @@
 import mainRouter from "./main";
+import userRouter from "./user";
 
-export { mainRouter };
+export { mainRouter, userRouter };
