@@ -4,6 +4,7 @@ import cors from "cors";
 import os from "os";
 import { mainRouter, userRouter } from "./routes";
 import { dataSource } from "./utils/typeORMConfig";
+import Redis from "ioredis";
 
 const main = async () => {
   // connecting to the postgres DB
@@ -11,6 +12,8 @@ const main = async () => {
 
   // initializing the express server
   const app = express();
+
+  const redis = new Redis();
 
   app.use(
     cors({
@@ -20,6 +23,13 @@ const main = async () => {
   );
 
   app.use(express.json());
+
+  app.use((req, res, next) => {
+    app.locals.context = { redis };
+
+    next();
+  });
+
   app.use("/", mainRouter);
   app.use("/user", userRouter);
 
