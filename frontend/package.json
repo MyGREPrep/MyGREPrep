@@ -1,12 +1,17 @@
 {
-  "name": "mygreprep-ui",
+  "name": "@mygreprep/frontend",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "check-types": "node -e \"console.log('We currently are not using TS for the frontend, this is a dummy command *ignore*')\"",
+    "lint": "node -e \"console.log('dummy lint')\"",
+    "lint:fix": "node -e \"console.log('dummy lint')\"",
+    "prettier:check": "node -e \"console.log('dummy prettier')\"",
+    "prettier:write": "node -e \"console.log('dummy prettier')\""
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "1.17.11",
