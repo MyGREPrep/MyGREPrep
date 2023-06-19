@@ -1,8 +1,8 @@
 import { useNavigation, CommonActions } from "@react-navigation/core";
 import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { auth } from "../firebase";
-import SectionsScreen from "../App/Components/SectionsScreen";
+import { auth } from "../../firebase";
+import SectionsScreen from "../Components/SectionsScreen";
 
 const HomeScreen = () => {
   const navigation = useNavigation();

@@ -2,11 +2,14 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Login from "./pages/Login";
-import HomeScreen from "./pages/HomeScreen";
+import Login from "./App/Pages/Login";
+import HomeScreen from "./App/Pages/HomeScreen";
 import WelcomeHeader from "./App/Components/WelcomeHeader";
 import SectionDetailsComponent from "./App/Components/SectionDetailsComponent";
 import SectionsScreen from "./App/Components/SectionsScreen";
+import ForgetPassword from "./App/Pages/ForgetPassword";
+import VerifyOTP from "./App/Components/VerifyOTP";
+import NewPassword from "./App/Components/NewPassword";
 
 const Stack = createNativeStackNavigator();
 
@@ -15,7 +18,9 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{
+            header: () => <WelcomeHeader />,
+          }}
           name="Login"
           component={Login}
         />
@@ -26,10 +31,40 @@ export default function App() {
             header: () => <WelcomeHeader />,
           }}
         />
-        <Stack.Screen name="Sections" component={SectionsScreen} />
+        <Stack.Screen
+          name="ForgetPassword"
+          component={ForgetPassword}
+          options={{
+            header: () => <WelcomeHeader />,
+          }}
+        />
+        <Stack.Screen
+          name="VerifyOTP"
+          component={VerifyOTP}
+          options={{
+            header: () => <WelcomeHeader />,
+          }}
+        />
+        <Stack.Screen
+          name="NewPassword"
+          component={NewPassword}
+          options={{
+            header: () => <WelcomeHeader />,
+          }}
+        />
+        <Stack.Screen
+          name="Sections"
+          component={SectionsScreen}
+          options={{
+            header: () => <WelcomeHeader />,
+          }}
+        />
         <Stack.Screen
           name="SectionDetails"
           component={SectionDetailsComponent}
+          options={{
+            header: () => <WelcomeHeader />,
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>
