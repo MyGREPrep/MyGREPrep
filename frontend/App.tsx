@@ -2,11 +2,11 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Login from "./Login";
-import HomeScreen from "./HomeScreen";
-import CourseDetails from "./App/Pages/CourseDetails";
+import Login from "./pages/Login";
+import HomeScreen from "./pages/HomeScreen";
 import WelcomeHeader from "./App/Components/WelcomeHeader";
-import { auth } from "./firebase";
+import SectionDetailsComponent from "./App/Components/SectionDetailsComponent";
+import SectionsScreen from "./App/Components/SectionsScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -25,6 +25,11 @@ export default function App() {
           options={{
             header: () => <WelcomeHeader />,
           }}
+        />
+        <Stack.Screen name="Sections" component={SectionsScreen} />
+        <Stack.Screen
+          name="SectionDetails"
+          component={SectionDetailsComponent}
         />
       </Stack.Navigator>
     </NavigationContainer>
