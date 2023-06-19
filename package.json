@@ -36,5 +36,8 @@
     "check-types": "yarn workspaces run check-types",
     "lint": "yarn workspaces run lint",
     "prettier:write": "yarn workspaces run prettier:write"
+  },
+  "dependencies": {
+    "@react-navigation/core": "^6.4.8"
   }
 }
