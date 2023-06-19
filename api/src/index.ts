@@ -2,7 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import os from "os";
-import { mainRouter } from "./routes";
+import { mainRouter, userRouter } from "./routes";
 import { dataSource } from "./utils/typeORMConfig";
 
 const main = async () => {
@@ -19,7 +19,9 @@ const main = async () => {
     })
   );
 
+  app.use(express.json());
   app.use("/", mainRouter);
+  app.use("/user", userRouter);
 
   app.listen(process.env.PORT, () => {
     console.log(
