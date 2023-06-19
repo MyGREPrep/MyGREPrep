@@ -1,10 +1,10 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Home from './App/Pages/Home';
-import CourseDetails from './App/Pages/CourseDetails';
-import CourseChapter from './App/Pages/CourseChapter';
-import PlayVideo from './App/Pages/PlayVideo';
+import Home from '../App/Pages/Home';
+import CourseDetails from '../App/Pages/CourseDetails';
+import CourseChapter from '../App/Pages/CourseChapter';
+import PlayVideo from '../App/Pages/PlayVideo';
 import { NavigationContainer } from '@react-navigation/native';
 
 const Stack = createNativeStackNavigator();
