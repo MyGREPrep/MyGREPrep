@@ -31,7 +31,7 @@ export default function WelcomeHeader() {
       <View style={styles.headerContent}>
         <Text style={styles.leftText}>MyGRE-Prep</Text>
         <TouchableOpacity onPress={handleSignOut} style={styles.button}>
-        <Text style={styles.rightText}>Sign Out</Text>
+        {auth.currentUser !== null ? <Text style={styles.rightText}>Sign Out</Text>:''}
         </TouchableOpacity>
       </View>
     </SafeAreaView>
