@@ -7,32 +7,34 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from "react-native";
-import React, { useContext } from "react";
-import { useNavigation, CommonActions } from "@react-navigation/core";
+import React, { useContext, useState } from "react";
+import {
+  useNavigation,
+  CommonActions,
+  DrawerActions,
+} from "@react-navigation/core";
 import { auth } from "../../firebase";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function WelcomeHeader() {
-  const navigation = useNavigation();
-  const handleSignOut = () => {
-    auth
-      .signOut()
-      .then(() => {
-        navigation.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{ name: "Login" }],
-          })
-        );
-      })
-      .catch((error) => alert(error.message));
+  const toggleDrawer = () => {
+    navigation.dispatch(DrawerActions.openDrawer());
   };
+  const navigation = useNavigation();
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headerContent}>
+        {auth.currentUser !== null ? (
+          <TouchableOpacity onPress={toggleDrawer}>
+            <View style={styles.burgerIcon}>
+              <Ionicons name="ios-menu" size={30} color="white" />
+            </View>
+          </TouchableOpacity>
+        ) : (
+          ""
+        )}
         <Text style={styles.leftText}>MyGRE-Prep</Text>
-        <TouchableOpacity onPress={handleSignOut} style={styles.button}>
-        {auth.currentUser !== null ? <Text style={styles.rightText}>Sign Out</Text>:''}
-        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -45,7 +47,6 @@ const styles = StyleSheet.create({
   },
   headerContent: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
     padding: 14,
   },
@@ -53,6 +54,8 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 18,
     fontWeight: "bold",
+    marginLeft:18
+    
   },
   rightText: {
     color: "white",
@@ -65,5 +68,8 @@ const styles = StyleSheet.create({
     padding: 4,
     borderRadius: 10,
     alignItems: "center",
-  }
+  },
+  burgerIcon: {
+    marginLeft: 10,
+  },
 });

@@ -26,7 +26,7 @@ const Login = () => {
   const [msg, setMsg] = useState("");
 
   const navigation = useNavigation();
-  const icon = require("./../Assets/Images/login.png");
+  const icon = require("./../Assets/Images/mygreprep.jpeg");
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
