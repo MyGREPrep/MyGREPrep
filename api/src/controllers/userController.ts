@@ -8,10 +8,8 @@ import { sendEmail } from "../utils/sendEmail";
 const registerUser = async (req: Request, res: Response) => {
   const hashedPassword = await argon2.hash(req.body.password);
 
-  let user;
-
   try {
-    const result = await dataSource
+    await dataSource
       .createQueryBuilder()
       .insert()
       .into(User)
@@ -25,7 +23,7 @@ const registerUser = async (req: Request, res: Response) => {
       .returning("*")
       .execute();
 
-    user = result.raw[0];
+    // user = result.raw[0];
   } catch (error) {
     if (error.code === "23505") {
       return res.status(500).json({
@@ -36,8 +34,6 @@ const registerUser = async (req: Request, res: Response) => {
       });
     }
   }
-
-  console.log(user);
 
   return res.status(201).json({
     status: true,
@@ -88,6 +84,29 @@ const forgotPassword = async (req: Request, res: Response) => {
   });
 };
 
+const verifyOtp = async (req: Request, res: Response) => {
+  const redis = req.app.locals.context.redis;
+  const key = FORGET_PASSWORD_PREFIX + req.body.code;
+
+  const userId = await redis.get(key);
+
+  if (!userId) {
+    return res.status(500).json({
+      status: false,
+      payload: {
+        message: "Code is invalid",
+      },
+    });
+  }
+
+  return res.status(201).json({
+    status: true,
+    payload: {
+      message: "Code is valid and verified",
+    },
+  });
+};
+
 const changePassword = async (req: Request, res: Response) => {
   const redis = req.app.locals.context.redis;
   const key = FORGET_PASSWORD_PREFIX + req.body.code;
@@ -125,4 +144,4 @@ const changePassword = async (req: Request, res: Response) => {
   });
 };
 
-export { registerUser, users, forgotPassword, changePassword };
+export { registerUser, users, forgotPassword, changePassword, verifyOtp };
