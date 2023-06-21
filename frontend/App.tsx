@@ -1,72 +1,52 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Login from "./App/Pages/Login";
-import HomeScreen from "./App/Pages/HomeScreen";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import AboutUs from "./App/Components/AboutUs";
+import { auth } from "./firebase";
 import WelcomeHeader from "./App/Components/WelcomeHeader";
-import SectionDetailsComponent from "./App/Components/SectionDetailsComponent";
-import SectionsScreen from "./App/Components/SectionsScreen";
-import ForgetPassword from "./App/Pages/ForgetPassword";
-import VerifyOTP from "./App/Components/VerifyOTP";
-import NewPassword from "./App/Components/NewPassword";
+import { Ionicons } from "@expo/vector-icons";
+import Rewards from "./App/Components/Rewards";
+import DrawerContent from "./App/Components/DrawerContent";
+import AuthStack from "./App/Pages/AuthStack";
 
-const Stack = createNativeStackNavigator();
-
+const Drawer = createDrawerNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
+      <Drawer.Navigator
+        drawerContent={props => <DrawerContent {...props} />}
+        screenOptions={{
+          drawerActiveBackgroundColor: "#0782F9",
+          drawerActiveTintColor: "#fff",
+          drawerInactiveTintColor: "#333",
+          drawerLabelStyle: {
+            fontSize: 15,
+          },
+        }}
+      >
+        <Drawer.Screen
+          name="MyGREPrep"
+          component={AuthStack}
           options={{
-            header: () => <WelcomeHeader />,
-          }}
-          name="Login"
-          component={Login}
-        />
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{
-            header: () => <WelcomeHeader />,
-          }}
-        />
-        <Stack.Screen
-          name="ForgetPassword"
-          component={ForgetPassword}
-          options={{
-            header: () => <WelcomeHeader />,
+            header: () => (auth.currentUser !== null ? <WelcomeHeader /> : ""),
           }}
         />
-        <Stack.Screen
-          name="VerifyOTP"
-          component={VerifyOTP}
+        <Drawer.Screen
+          name="AboutUs"
+          component={AboutUs}
           options={{
-            header: () => <WelcomeHeader />,
+            header: () => (<WelcomeHeader />),
           }}
         />
-        <Stack.Screen
-          name="NewPassword"
-          component={NewPassword}
+        <Drawer.Screen
+          name="Rewards"
+          component={Rewards}
           options={{
-            header: () => <WelcomeHeader />,
+            header: () => (<WelcomeHeader />),
           }}
         />
-        <Stack.Screen
-          name="Sections"
-          component={SectionsScreen}
-          options={{
-            header: () => <WelcomeHeader />,
-          }}
-        />
-        <Stack.Screen
-          name="SectionDetails"
-          component={SectionDetailsComponent}
-          options={{
-            header: () => <WelcomeHeader />,
-          }}
-        />
-      </Stack.Navigator>
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 }

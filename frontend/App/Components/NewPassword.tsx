@@ -14,20 +14,25 @@ const NewPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [errMsg, setErrorMsg] = useState("");
   const navigation = useNavigation();
 
   const handleChangePassword = () => {
-    if (password === confirmPassword) {
+    if (password !== '' && password === confirmPassword) {
       // Passwords match, call change password API
       console.log("Password changed successfully!");
       setSuccess(true);
-    } else {
+    }else if(password === '' && confirmPassword ===''){
+      setError(true);
+      setErrorMsg("Password cannot be empty");
+    } 
+    else {
       // Passwords do not match, show an error message or take appropriate action
       setError(true);
-      console.log("Passwords do not match!");
+      setErrorMsg("Passwords do not match!");
     }
   };
-
+console.log("ERR",errMsg)
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Enter New passowrd</Text>
@@ -68,7 +73,7 @@ const NewPassword = () => {
       {error ? (
         <SnackBar
           visible={true}
-          textMessage={"Password do not match"}
+          textMessage={errMsg}
           backgroundColor="#FF0000"
           actionHandler={() => {
             setError(false);
