@@ -2,7 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import os from "os";
-import { mainRouter, userRouter } from "./routes";
+import { mainRouter, questionRouter, userRouter } from "./routes";
 import { dataSource } from "./utils/typeORMConfig";
 import Redis from "ioredis";
 
@@ -25,13 +25,14 @@ const main = async () => {
   app.use(express.json());
 
   app.use((req, res, next) => {
-    app.locals.context = { redis };
+    app.locals.context = { redis, dataSource };
 
     next();
   });
 
   app.use("/", mainRouter);
   app.use("/user", userRouter);
+  app.use("/question", questionRouter);
 
   app.listen(process.env.PORT, () => {
     console.log(
