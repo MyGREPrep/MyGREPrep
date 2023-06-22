@@ -3,25 +3,35 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { SectionType } from "./SectionType";
+import { Option } from "./Option";
+
+/* eslint-disable no-unused-vars */
+export enum Section {
+  QUANTITATIVE = "QUANTITATIVE",
+  VERBAL = "VERBAL",
+  ANALYTICAL = "ANALYTICAL",
+}
 
 @Entity()
 export class Question extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column()
+  @Column({ type: "text" })
   description!: string;
 
-  @Column()
+  @Column({ type: "text" })
   question!: string;
 
-  @OneToOne(() => SectionType, (sectionType) => sectionType.questionId)
-  sectionType: SectionType;
+  @Column({ type: "enum", enum: Section, default: Section.QUANTITATIVE })
+  sectionType!: Section;
+
+  @OneToMany(() => Option, (option) => option.questionId)
+  options: Option[];
 
   @CreateDateColumn()
   createdAt: Date;
