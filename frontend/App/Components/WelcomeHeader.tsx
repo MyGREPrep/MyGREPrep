@@ -49,11 +49,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     padding: 14,
+    marginTop:-18
   },
   leftText: {
     color: "white",
     fontSize: 18,
     fontWeight: "bold",
+    alignItems:"center",
     marginLeft:18
     
   },

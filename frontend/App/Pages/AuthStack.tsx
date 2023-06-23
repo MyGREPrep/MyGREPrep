@@ -8,6 +8,8 @@ import VerifyOTP from "../Components/VerifyOTP";
 import NewPassword from "../Components/NewPassword";
 import SectionsScreen from "../Components/SectionsScreen";
 import SectionDetailsComponent from "../Components/SectionDetailsComponent";
+import TopicDetails from "../Components/TopicDetails";
+import Quiz from "../Components/Quiz";
 
 function AuthStack() {
   const Stack = createNativeStackNavigator();
@@ -56,7 +58,16 @@ function AuthStack() {
         component={SectionDetailsComponent}
         options={{ headerShown: false }}
       />
-      
+      <Stack.Screen
+        name="TopicDetails"
+        component={TopicDetails}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Quiz"
+        component={Quiz}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 }

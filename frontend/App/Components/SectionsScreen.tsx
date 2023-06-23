@@ -9,13 +9,15 @@ const SectionsScreen = ({ navigation }) => {
       description:
         "Assesses your ability to analyze and evaluate written material and synthesize information obtained from it.",
       icon: require("../Assets/Images/idea.png"),
+      topics: ["English", "Learn"],
     },
     {
       id: "2",
       title: "Quantitative Reasoning",
       description:
         "Tests your understanding of basic concepts of arithmetic, algebra, geometry, and data analysis.",
-        icon: require("../Assets/Images/calculator.png"),
+      icon: require("../Assets/Images/calculator.png"),
+      topics: ["Ratio", "Percentage"],
     },
     {
       id: "3",
@@ -23,6 +25,7 @@ const SectionsScreen = ({ navigation }) => {
       description:
         "Measures critical thinking and analytical writing skills, including your ability to articulate complex ideas clearly and effectively.",
       icon: require("../Assets/Images/analytics.png"),
+      topics: ["Writing1", "Writing2"],
     },
   ];
 
@@ -36,6 +39,8 @@ const SectionsScreen = ({ navigation }) => {
             navigation.navigate("SectionDetails", {
               sectionTitle: section.title,
               sectionDescription: section.description,
+              sectionTopics:section.topics,
+              navigation:navigation
             })
           }
         >
