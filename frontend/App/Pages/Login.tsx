@@ -21,6 +21,8 @@ import SnackBar from "react-native-snackbar-component";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [dob, setDOB] = useState("");
   const [error, setError] = useState(false);
   const [loginError, setLoginError] = useState(false);
   const [msg, setMsg] = useState("");
@@ -53,8 +55,23 @@ const Login = () => {
       const user = userCredentials.user;
       console.log("Registered with:", userCredentials);
       if (user.email !== undefined) {
-        console.log("Call to API");
-        //call to our api
+        // Call your leadership database API here to store user information
+        const response = await fetch("localhost", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            username,
+            dob,
+          }),
+        });
+        if (response.ok) {
+          console.log("User information stored in the leadership database");
+        } else {
+          console.log("Failed to store user information in the leadership database");
+        }
       }
     } catch (err) {
       setError(true);
