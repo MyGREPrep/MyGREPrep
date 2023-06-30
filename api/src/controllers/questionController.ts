@@ -26,19 +26,14 @@ const createOption = async (req: Request, res: Response) => {
   const questionId = req.body.questionId;
   const isCorrect = req.body.isCorrect;
 
+  let optionCreated;
+
   try {
-    const optionCreated = await Option.create({
+    optionCreated = await Option.create({
       option,
       questionId,
       isCorrect,
     }).save();
-
-    return res.status(201).json({
-      status: true,
-      payload: {
-        option: optionCreated,
-      },
-    });
   } catch (error) {
     if (error.code === "23503") {
       res.status(500).json({
@@ -49,6 +44,13 @@ const createOption = async (req: Request, res: Response) => {
       });
     }
   }
+
+  return res.status(201).json({
+    status: true,
+    payload: {
+      option: optionCreated,
+    },
+  });
 };
 
 const getQuestionIds = async (req: Request, res: Response) => {
@@ -84,7 +86,7 @@ const getQuestion = async (req: Request, res: Response) => {
   });
 };
 
-const options = async (req: Request, res: Response) => {
+const options = async (_: Request, res: Response) => {
   const options = await Option.find({});
 
   return res.status(201).json({
