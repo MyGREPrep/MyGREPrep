@@ -13,7 +13,7 @@ const main = async () => {
   // initializing the express server
   const app = express();
 
-  const redis = new Redis();
+  const redis = new Redis(process.env.REDIS_URL);
 
   app.use(
     cors({
@@ -24,7 +24,7 @@ const main = async () => {
 
   app.use(express.json());
 
-  app.use((req, res, next) => {
+  app.use((_, __, next) => {
     app.locals.context = { redis, dataSource };
 
     next();
@@ -34,7 +34,7 @@ const main = async () => {
   app.use("/user", userRouter);
   app.use("/question", questionRouter);
 
-  app.listen(process.env.PORT, () => {
+  app.listen(parseInt(process.env.PORT), () => {
     console.log(
       `@mygreprep/api running at ${os.hostname} at port ${process.env.PORT}`
     );

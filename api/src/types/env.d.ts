@@ -5,6 +5,8 @@ declare global {
       POSTGRES_DBNAME: string;
       POSTGRES_USER: string;
       POSTGRES_PASSWORD: string;
+      DATABASE_URL: string;
+      REDIS_URL: string;
     }
   }
 }

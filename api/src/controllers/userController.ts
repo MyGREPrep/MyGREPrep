@@ -43,7 +43,7 @@ const registerUser = async (req: Request, res: Response) => {
   });
 };
 
-const users = async (req: Request, res: Response) => {
+const users = async (_: Request, res: Response) => {
   const users = await User.find({});
 
   return res.status(201).json({
