@@ -9,6 +9,7 @@ import { Ionicons } from "@expo/vector-icons";
 import Rewards from "./App/Components/Rewards";
 import DrawerContent from "./App/Components/DrawerContent";
 import AuthStack from "./App/Pages/AuthStack";
+import Board from "./App/Components/Leaderboard";
 
 const Drawer = createDrawerNavigator();
 export default function App() {
@@ -35,6 +36,13 @@ export default function App() {
         <Drawer.Screen
           name="AboutUs"
           component={AboutUs}
+          options={{
+            header: () => (<WelcomeHeader />),
+          }}
+        />
+         <Drawer.Screen
+          name="Leaderboard"
+          component={Board}
           options={{
             header: () => (<WelcomeHeader />),
           }}
