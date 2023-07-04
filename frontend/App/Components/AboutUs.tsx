@@ -6,7 +6,7 @@ const AboutUs = () => {
     <View style={styles.container}>
       <Text style={styles.title}>About Us</Text>
       <Text style={styles.description}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae ultrices tortor. Integer euismod nisl id erat finibus, et dictum mi ullamcorper. Nullam euismod augue ut tincidunt bibendum. Suspendisse semper elit vel erat iaculis, vel sagittis urna sagittis. Duis cursus placerat mauris, sed auctor odio. In hac habitasse platea dictumst.
+      Welcome to MyGREPrep! We understand the challenges and complexities of preparing for the GRE and believe that with the right guidance, tools, and support, anyone can excel in this crucial exam. We have dedicated our collective knowledge, expertise, and research into developing a user-friendly and effective learning app that covers all aspects of the GRE exam. The app provides a great learning experience with its comprehensive study resources and practice problems. Whether you're a busy professional, a full-time student, or someone juggling multiple responsibilities, our app is tailored to fit seamlessly into your lifestyle and help you make the most of your study time. Join us on this transformative learning journey and unlock your true potential.
       </Text>
     </View>
   );
