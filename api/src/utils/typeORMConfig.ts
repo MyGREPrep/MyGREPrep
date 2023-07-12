@@ -1,3 +1,4 @@
+import { Topic } from "../entities/Topic";
 import { Option } from "../entities/Option";
 import { Question } from "../entities/Question";
 import { User } from "../entities/User";
@@ -8,6 +9,6 @@ export const dataSource = new DataSource({
   url: process.env.DATABASE_URL,
   logging: true,
   synchronize: true,
-  entities: [User, Question, Option],
+  entities: [User, Question, Option, Topic],
   // migrations: [path.join(__dirname, "./migrations/*")],
 });
