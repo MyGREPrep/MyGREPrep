@@ -10,6 +10,8 @@ import Rewards from "./App/Components/Rewards";
 import DrawerContent from "./App/Components/DrawerContent";
 import AuthStack from "./App/Pages/AuthStack";
 import LeaderBoard from "./App/Components/Leaderboard";
+import Board from "./App/Components/Leaderboard";
+import Tips from "./App/Components/Tips";
 
 const Drawer = createDrawerNavigator();
 export default function App() {
@@ -50,6 +52,13 @@ export default function App() {
         <Drawer.Screen
           name="Rewards"
           component={Rewards}
+          options={{
+            header: () => <WelcomeHeader />,
+          }}
+        />
+        <Drawer.Screen
+          name="Tips"
+          component={Tips}
           options={{
             header: () => <WelcomeHeader />,
           }}
