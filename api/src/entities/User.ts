@@ -27,6 +27,9 @@ export class User extends BaseEntity {
   @Column({ type: "int", nullable: true })
   phoneNumber: number | null;
 
+  @Column({type: "int", default: 0})
+  rewards!: number;
+
   @CreateDateColumn()
   createdAt: Date;
 
