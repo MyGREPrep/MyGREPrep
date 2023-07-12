@@ -5,6 +5,33 @@ import { Request, Response } from "express";
 import { FORGET_PASSWORD_PREFIX } from "../utils/constants";
 import { sendEmail } from "../utils/sendEmail";
 
+
+const verifyAnswer = async (req: Request, res: Response) => {
+  const userId = req.body.userId; 
+  const questionId = req.body.questionId; 
+  const selectedAnswer = req.body.selectedAnswer; 
+  const question = await Question.find({ where: { id: questionId } });
+  const options = await Option.find({ where: { questionId } });
+  
+  options.map((option)=>{
+    if(option.isCorrect==true && selectedAnswer.id == option.id){
+      res.status(200).json({
+        status: true,
+        payload: {
+          message: "Correct",
+        },
+      });
+    }
+  })
+
+  res.status(200).json({
+    status: false,
+    payload: {
+      message: "Incorrect",
+    },
+  });
+
+
 const registerUser = async (req: Request, res: Response) => {
   const hashedPassword = await argon2.hash(req.body.password);
 
@@ -143,5 +170,8 @@ const changePassword = async (req: Request, res: Response) => {
     status: true,
   });
 };
+
+
+
 
 export { registerUser, users, forgotPassword, changePassword, verifyOtp };
