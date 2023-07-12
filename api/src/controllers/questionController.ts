@@ -82,7 +82,10 @@ const getQuestion = async (req: Request, res: Response) => {
   const questionWithOption = { ...question["0"], options: [...options] };
 
   return res.status(201).json({
-    question: questionWithOption,
+    status: 201,
+    payload: {
+      question: questionWithOption,
+    }
   });
 };
 

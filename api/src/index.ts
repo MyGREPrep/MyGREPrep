@@ -2,7 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import os from "os";
-import { mainRouter, questionRouter, userRouter } from "./routes";
+import { mainRouter, questionRouter, topicRouter, userRouter } from "./routes";
 import { dataSource } from "./utils/typeORMConfig";
 import Redis from "ioredis";
 
@@ -33,6 +33,7 @@ const main = async () => {
   app.use("/", mainRouter);
   app.use("/user", userRouter);
   app.use("/question", questionRouter);
+  app.use("/topic", topicRouter);
 
   app.listen(parseInt(process.env.PORT), () => {
     console.log(
