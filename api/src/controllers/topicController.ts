@@ -24,13 +24,29 @@ const createTopic = async (req: Request, res: Response) => {
 
 const getTopic = async (req: Request, res: Response) => {
     const topicType = req.body.topic;
+    const dataSource = req.app.locals.context.dataSource;
 
     const topic = await Topic.find({where: {type: topicType}})
+
+    const quizQuestions  = await dataSource.query(
+        `
+            select q.* 
+            from question q
+            order by random() limit 5
+            where topicType = $1
+        `,
+        [topicType]
+      );
+
+      const newTopicWithQuestions = {
+        ...topic,
+        quiz: quizQuestions
+      }
 
     return res.status(201).json({
         status: 201,
         payload: {
-            topic: topic
+            topic: newTopicWithQuestions
         }
     })
 }
