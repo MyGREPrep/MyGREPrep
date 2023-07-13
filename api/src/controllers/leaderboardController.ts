@@ -5,12 +5,11 @@ const fetchScores = async (req: Request, res: Response) => {
 
     const mockTestScoreIds = await dataSource.query(
         `
-            SELECT m.score, u.userId
-            FROM "MockTestScore" m
-            INNER JOIN user u ON u.id = m.userId
-            ORDER BY m.score DESC
-
-        `
+            select u.id, m.score
+            from user u
+            inner join mocktestscore m on u.id = m."userId"
+        `,
+        []
     );
 
     res.status(500).json({

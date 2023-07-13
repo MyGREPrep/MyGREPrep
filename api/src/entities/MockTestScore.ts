@@ -6,11 +6,12 @@ import{
     CreateDateColumn,
     UpdateDateColumn,
     OneToOne,
+    JoinColumn,
 }from "typeorm";
 import {User} from "./User";
 
 @Entity()
-export class MockTestScore extends BaseEntity{
+export class Mocktestscore extends BaseEntity{
     @PrimaryGeneratedColumn()
     id!: number;
 
@@ -21,6 +22,7 @@ export class MockTestScore extends BaseEntity{
     userId: number;
 
     @OneToOne(() => User, (user) => user.id)
+    @JoinColumn()
     user: User;
 
     @CreateDateColumn()

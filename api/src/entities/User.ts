@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { MockTestScore } from "./MockTestScore";
+import { Mocktestscore } from "./MockTestScore";
 
 @Entity()
 export class User extends BaseEntity {
@@ -29,8 +29,8 @@ export class User extends BaseEntity {
   @Column({ type: "int", nullable: true })
   phoneNumber: number | null;
 
-  @OneToMany(() => MockTestScore, (mockTestScore) => mockTestScore.score)
-  mockTestScores: MockTestScore[];
+  @OneToMany(() => Mocktestscore, (mockTestScore) => mockTestScore.userId)
+  mockTestScores: Mocktestscore[];
 
   @CreateDateColumn()
   createdAt: Date;

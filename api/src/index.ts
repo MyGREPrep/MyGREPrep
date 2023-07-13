@@ -5,6 +5,8 @@ import os from "os";
 import { mainRouter, questionRouter, topicRouter, userRouter } from "./routes";
 import { dataSource } from "./utils/typeORMConfig";
 import Redis from "ioredis";
+import mockTestRouter from "./routes/mockTest";
+import leaderboardRouter from "./routes/leaderboard";
 
 const main = async () => {
   // connecting to the postgres DB
@@ -34,6 +36,8 @@ const main = async () => {
   app.use("/user", userRouter);
   app.use("/question", questionRouter);
   app.use("/topic", topicRouter);
+  app.use("/mocktest", mockTestRouter);
+  app.use("/leaderboard", leaderboardRouter);
 
   app.listen(parseInt(process.env.PORT), () => {
     console.log(
