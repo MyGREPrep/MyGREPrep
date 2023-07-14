@@ -4,6 +4,8 @@ import { dataSource } from "../utils/typeORMConfig";
 import { Request, Response } from "express";
 import { FORGET_PASSWORD_PREFIX } from "../utils/constants";
 import { sendEmail } from "../utils/sendEmail";
+import { Question } from "../entities/Question";
+import { Option } from "../entities/Option";
 
 
 const verifyAnswer = async (req: Request, res: Response) => {
