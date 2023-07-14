@@ -15,7 +15,8 @@ const Leaderboard = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        setMockTestScores(data.payload.mockTestScores);
+        
+        // setMockTestScores(data.payload.mockTestScores);
       })
       .catch((error) => {
         console.error("Error fetching topics:", error);

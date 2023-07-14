@@ -17,7 +17,7 @@ const SectionsScreen = ({ navigation }) => {
       description:
         "Tests your understanding of basic concepts of arithmetic, algebra, geometry, and data analysis.",
       icon: require("../Assets/Images/calculator.png"),
-      topics: ["Ratio", "Percentage"],
+      topics: ["Algebra", "Arithmetic", "Data Analysis", "Fraction", "Geometry", "Integers", "Ratio", "Percentage"],
     },
     {
       id: "3",
@@ -59,7 +59,7 @@ const SectionsScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 2,
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
