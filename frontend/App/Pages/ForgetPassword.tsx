@@ -67,7 +67,7 @@ const ForgetPassword = ({}) => {
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={handleSubmit} style={styles.button}>
+        <TouchableOpacity onPress={handleSubmit} style={styles.button}  >
           <Text style={styles.buttonText}>Submit</Text>
         </TouchableOpacity>
         <TouchableOpacity

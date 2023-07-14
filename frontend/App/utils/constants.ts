@@ -1,0 +1,1 @@
+export const BACKEND = `${process.env.ORIGIN}:${process.env.PORT}`;

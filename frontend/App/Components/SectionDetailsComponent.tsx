@@ -1,6 +1,7 @@
 import { CommonActions, useNavigation } from "@react-navigation/core";
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { BACKEND } from "../utils/constants";
 
 const SectionDetailsComponent = ({ route }) => {
   const { sectionTitle, sectionDescription, sectionTopics, navigation } =
@@ -11,13 +12,12 @@ const SectionDetailsComponent = ({ route }) => {
     const requestBody = {
       topic: topic,
     };
-
-    fetch("http://localhost:5000/topic/get-topic", {
+    fetch(`http://192.168.149.143:5000/topic/get-topic?topic=${topic}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(requestBody),
+  
     })
       .then((response) => response.json())
       .then((data) => {
