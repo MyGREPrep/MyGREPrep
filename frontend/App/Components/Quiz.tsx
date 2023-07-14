@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -10,12 +10,19 @@ import {
   Animated,
 } from "react-native";
 import { COLORS, SIZES } from "../constants";
-import data from "../QuizData/RatioQuiz";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Colors from "../Shared/Colors";
 
 const Quiz = ({ route }) => {
-  const allQuestions = data;
+  const { quiz } = route.params;
+  console.log("QUES", quiz);
+
+  const [questions, setQuestions] = useState([]);
+  useEffect(() => {
+    setQuestions(quiz);
+  }, []);
+
+  const allQuestions = questions;
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [currentOptionSelected, setCurrentOptionSelected] = useState(null);
   const [correctOption, setCorrectOption] = useState(null);
@@ -23,15 +30,14 @@ const Quiz = ({ route }) => {
   const [score, setScore] = useState(0);
   const [showNextButton, setShowNextButton] = useState(false);
   const [showScoreModal, setShowScoreModal] = useState(false);
-  const { navigation } = route.params;
   const validateAnswer = (selectedOption) => {
-    let correct_option = allQuestions[currentQuestionIndex]["correct_option"];
+    let correct_option = allQuestions[currentQuestionIndex]["correctOption"];
     setCurrentOptionSelected(selectedOption);
     setCorrectOption(correct_option);
     setIsOptionsDisabled(true);
     if (selectedOption == correct_option) {
       // Set Score
-      setScore(score + 1);
+      setScore(score + 5);
     }
     // Show Next Button
     setShowNextButton(true);
@@ -260,7 +266,7 @@ const Quiz = ({ route }) => {
           flex: 1,
           paddingVertical: 40,
           paddingHorizontal: 16,
-         
+
           position: "relative",
         }}
       >
@@ -326,7 +332,7 @@ const Quiz = ({ route }) => {
                   style={{
                     fontSize: 20,
                     color: COLORS.black,
-                    paddingLeft:8
+                    paddingLeft: 8,
                   }}
                 >
                   / {allQuestions.length}
@@ -350,27 +356,6 @@ const Quiz = ({ route }) => {
                   style={{ color: "white", fontWeight: "700", fontSize: 16 }}
                 >
                   Retry
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.goBack();
-                }}
-                style={{
-                  backgroundColor: "#0782F9",
-                  width: "100%",
-                  padding: 15,
-                  borderRadius: 10,
-                  alignItems: "center",
-                  marginTop: 5,
-                  borderColor: "#0782F9",
-                  borderWidth: 2,
-                }}
-              >
-                <Text
-                  style={{ color: "white", fontWeight: "700", fontSize: 16 }}
-                >
-                  Back
                 </Text>
               </TouchableOpacity>
             </View>

@@ -3,21 +3,19 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import Quiz from "./Quiz";
 
 function TopicDetails({ route }) {
-  const {
-    topicId,
-    topicDescription,
-    topicSignificance,
-    topicVideo,
-    navigation,
-  } = route.params;
+  const { topics, navigation } = route.params;
 
+  console.log("LUQ", topics.quiz);
   const handleStartQuiz = () => {
-    navigation.navigate("Quiz",{navigation:navigation});
+    navigation.navigate("Quiz", {
+      hello: "joel",
+      quiz: topics.quiz,
+    });
   };
   return (
     <View style={{ margin: 18 }}>
-      <Text style={styles.description}>{topicDescription}</Text>
-      <Text style={styles.significance}>{topicSignificance}</Text>
+      <Text style={styles.description}>{topics.description}</Text>
+      <Text style={styles.significance}>{topics.significance}</Text>
       <View style={styles.videoContainer}>
         {/* video component goes here */}
       </View>
