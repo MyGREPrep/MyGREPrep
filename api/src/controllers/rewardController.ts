@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { User } from "src/entities/User";
+import { User } from "../entities/User";
 
 const getRewards = async (req: Request, res: Response) => {
   const user = await User.find({ where: { email: req.body.userEmail } });
@@ -36,10 +36,8 @@ const addRewards = async (req: Request, res: Response) => {
     });
   }
 
-  let newRewards;
-
   try {
-    newRewards = await dataSource.query(
+    await dataSource.query(
       `
         update "user"
         set rewards = rewards + $1
@@ -49,13 +47,13 @@ const addRewards = async (req: Request, res: Response) => {
     );
   } catch (error) {
     console.log(error);
+    return res.status(201).json({
+      status: false,
+    });
   }
 
   return res.status(201).json({
     status: true,
-    payload: {
-      newRewards: newRewards,
-    },
   });
 };
 
