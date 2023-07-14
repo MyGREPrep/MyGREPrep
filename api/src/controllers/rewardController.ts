@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { User } from "src/entities/User";
 
 const getRewards = async (req: Request, res: Response) => {
-  const user = await User.find({ where: { id: req.body.userId } });
+  const user = await User.find({ where: { email: req.body.userEmail } });
 
   if (!user) {
     return res.status(500).json({
