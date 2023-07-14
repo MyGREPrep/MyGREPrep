@@ -4,10 +4,7 @@ import Quiz from "./Quiz";
 
 function TopicDetails({ route }) {
   const {
-    topicId,
-    topicDescription,
-    topicSignificance,
-    topicVideo,
+    topics,
     navigation,
   } = route.params;
 
@@ -16,8 +13,8 @@ function TopicDetails({ route }) {
   };
   return (
     <View style={{ margin: 18 }}>
-      <Text style={styles.description}>{topicDescription}</Text>
-      <Text style={styles.significance}>{topicSignificance}</Text>
+      <Text style={styles.description}>{topics.description}</Text>
+      <Text style={styles.significance}>{topics.significance}</Text>
       <View style={styles.videoContainer}>
         {/* video component goes here */}
       </View>

@@ -10,6 +10,10 @@ import Rewards from "./App/Components/Rewards";
 import DrawerContent from "./App/Components/DrawerContent";
 import AuthStack from "./App/Pages/AuthStack";
 import LeaderBoard from "./App/Components/Leaderboard";
+import Board from "./App/Components/Leaderboard";
+import MockTest from "./App/Components/MockTestLandingPage";
+import CompleteMockTest from "./App/Components/CompleteMockTest";
+import MockTestLandingPage from "./App/Components/MockTestLandingPage";
 
 const Drawer = createDrawerNavigator();
 export default function App() {
@@ -52,6 +56,13 @@ export default function App() {
           component={Rewards}
           options={{
             header: () => <WelcomeHeader />,
+          }}
+        />
+        <Drawer.Screen
+          name="Mock Test"
+          component={CompleteMockTest}
+          options={{
+            header: () => (<WelcomeHeader />),
           }}
         />
       </Drawer.Navigator>

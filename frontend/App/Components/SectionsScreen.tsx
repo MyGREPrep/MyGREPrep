@@ -17,7 +17,7 @@ const SectionsScreen = ({ navigation }) => {
       description:
         "Tests your understanding of basic concepts of arithmetic, algebra, geometry, and data analysis.",
       icon: require("../Assets/Images/calculator.png"),
-      topics: ["Ratio", "Percentage"],
+      topics: ["Ratio", "Percentage","Fraction","Arithmetic","Algebra","Word Problems","Powers","Roots","Geometry", "Data Analysis"],
     },
     {
       id: "3",

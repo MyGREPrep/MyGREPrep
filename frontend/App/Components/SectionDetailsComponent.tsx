@@ -9,11 +9,10 @@ const SectionDetailsComponent = ({ route }) => {
   const handleButtonPress = (topic) => {
     // Request body for the API call
     const requestBody = {
-      section: topic,
+      topic: topic,
     };
 
-    // API call to fetch topics
-    fetch("https://api.example.com/topics", {
+    fetch("http://localhost:5000/topic/get-topic", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -25,7 +24,7 @@ const SectionDetailsComponent = ({ route }) => {
         // Process the fetched topics
 
         // Navigate to a different screen
-        navigation.navigate("TopicDetails", { topics: data });
+        navigation.navigate("TopicDetails", { topics: data.payload.topic,navigation: navigation });
       })
       .catch((error) => {
         console.error("Error fetching topics:", error);
@@ -43,14 +42,15 @@ const SectionDetailsComponent = ({ route }) => {
               key={index}
               style={styles.topic}
               onPress={() =>
-                //handleButtonPress(value)
-                navigation.navigate("TopicDetails", {
-                  topicId: 1,
-                  topicDescription: "Loren Ipsum",
-                  topicSignificance: "high",
-                  topicVideo: "www.URL.com",
-                  navigation: navigation
-                })
+                handleButtonPress(value)
+                // navigation.navigate("TopicDetails", {
+                //   topicId: 1,
+                //   topicValue:value,
+                //   topicDescription: "Loren Ipsum",
+                //   topicSignificance: "high",
+                //   topicVideo: "www.URL.com",
+                //   navigation: navigation
+                // })
               }
             >
               <View style={styles.textContainer}>

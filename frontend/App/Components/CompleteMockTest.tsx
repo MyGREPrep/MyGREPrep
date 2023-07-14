@@ -10,10 +10,11 @@ import {
   Animated,
 } from "react-native";
 import { COLORS, SIZES } from "../constants";
+import data from "../QuizData/RatioQuiz";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Colors from "../Shared/Colors";
 
-const Quiz = ({ route }) => {
+const CompleteMockTest = ({ route }) => {
   const [questions, setQuestions] = useState([]);
   useEffect(() => {
     // Fetch questions from API and set them in state
@@ -50,37 +51,37 @@ const Quiz = ({ route }) => {
       // .catch((error) => {
       //   console.log(error);
       // });
-    //   setQuestions([
-    //     {
-    //         question: "What’s the biggest planet in our solar system?",
-    //         options: ["Jupiter","Saturn","Neptune","Mercury"],
-    //         correct_option: "Jupiter"
-    //     },
-    //     {
-    //         question: "What attraction in India is one of the famus in the world?",
-    //         options: ["Chand Minar","Taj Mahal","Stadium"],
-    //         correct_option: "Taj Mahal"
-    //     },
-    //     {
-    //         question: "What land animal can open its mouth the widest?",
-    //         options: ["Alligator","Crocodile","Baboon","Hippo"],
-    //         correct_option: "Hippo"
-    //     },
-    //     {
-    //         question: "What is the largest animal on Earth?",
-    //         options: ["The African elephant","The blue whale","The sperm whale","The giant squid"],
-    //         correct_option: "The blue whale"
-    //     },
-    //     {
-    //         question: "What is the only flying mammal?",
-    //         options: ["The bat","The flying squirrel","The bald eagle","The colugo"],
-    //         correct_option: "The bat"
-    //     }
-    // ]);
+      setQuestions([
+        {
+            question: "What’s the biggest planet in our solar system?",
+            options: ["Jupiter","Saturn","Neptune","Mercury"],
+            correct_option: "Jupiter"
+        },
+        {
+            question: "What attraction in India is one of the famus in the world?",
+            options: ["Chand Minar","Taj Mahal","Stadium"],
+            correct_option: "Taj Mahal"
+        },
+        {
+            question: "What land animal can open its mouth the widest?",
+            options: ["Alligator","Crocodile","Baboon","Hippo"],
+            correct_option: "Hippo"
+        },
+        {
+            question: "What is the largest animal on Earth?",
+            options: ["The African elephant","The blue whale","The sperm whale","The giant squid"],
+            correct_option: "The blue whale"
+        },
+        {
+            question: "What is the only flying mammal?",
+            options: ["The bat","The flying squirrel","The bald eagle","The colugo"],
+            correct_option: "The bat"
+        }
+    ]);
   }, []);
   const fetchQuestionsFromAPI = async () => {
     // Fetch questions from API endpoint
-    const response = await fetch(`http://localhost:5000/topic/get-topic?topic=${"Ratio"}`);
+    const response = await fetch('https://api.example.com/questions');
     const data = await response.json();
     return data;
   };
@@ -92,7 +93,6 @@ const Quiz = ({ route }) => {
   const [score, setScore] = useState(0);
   const [showNextButton, setShowNextButton] = useState(false);
   const [showScoreModal, setShowScoreModal] = useState(false);
-  const { navigation } = route.params;
   const validateAnswer = (selectedOption) => {
     let correct_option = allQuestions[currentQuestionIndex]["correct_option"];
     setCurrentOptionSelected(selectedOption);
@@ -100,7 +100,7 @@ const Quiz = ({ route }) => {
     setIsOptionsDisabled(true);
     if (selectedOption == correct_option) {
       // Set Score
-      setScore(score + 5);
+      setScore(score + 1);
     }
     // Show Next Button
     setShowNextButton(true);
@@ -421,27 +421,6 @@ const Quiz = ({ route }) => {
                   Retry
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.goBack();
-                }}
-                style={{
-                  backgroundColor: "#0782F9",
-                  width: "100%",
-                  padding: 15,
-                  borderRadius: 10,
-                  alignItems: "center",
-                  marginTop: 5,
-                  borderColor: "#0782F9",
-                  borderWidth: 2,
-                }}
-              >
-                <Text
-                  style={{ color: "white", fontWeight: "700", fontSize: 16 }}
-                >
-                  Back
-                </Text>
-              </TouchableOpacity>
             </View>
           </View>
         </Modal>
@@ -450,4 +429,4 @@ const Quiz = ({ route }) => {
   );
 };
 
-export default Quiz;
+export default CompleteMockTest;

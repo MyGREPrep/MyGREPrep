@@ -10,6 +10,7 @@ import SectionsScreen from "../Components/SectionsScreen";
 import SectionDetailsComponent from "../Components/SectionDetailsComponent";
 import TopicDetails from "../Components/TopicDetails";
 import Quiz from "../Components/Quiz";
+import CompleteMockTest from "../Components/CompleteMockTest";
 
 function AuthStack() {
   const Stack = createNativeStackNavigator();
@@ -68,6 +69,7 @@ function AuthStack() {
         component={Quiz}
         options={{ headerShown: false }}
       />
+
     </Stack.Navigator>
   );
 }
