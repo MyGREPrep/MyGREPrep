@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { Option } from "./Option";
-import { Topic, TopicType } from "./Topic";
+import { TopicType } from "./Topic";
 
 /* eslint-disable no-unused-vars */
 export enum Section {
@@ -31,7 +31,7 @@ export class Question extends BaseEntity {
   @Column({ type: "enum", enum: Section, default: Section.QUANTITATIVE })
   sectionType!: Section;
 
-  @Column({ type: "enum", enum: TopicType, default: TopicType.ratio})
+  @Column({ type: "enum", enum: TopicType, default: TopicType.ratio })
   topicType!: TopicType;
 
   @OneToMany(() => Option, (option) => option.questionId)
