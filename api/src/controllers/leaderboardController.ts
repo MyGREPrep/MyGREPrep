@@ -10,7 +10,7 @@ const fetchScores = async (req: Request, res: Response) => {
 
   const mockTestScores: MockTestScores[] = await dataSource.query(
     `
-            select u.id, m.score
+            select u.name, m.score
             from "user" u
             inner join mocktestscore m
             on u.id = m."userId"
