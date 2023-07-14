@@ -46,7 +46,24 @@ const getTopic = async (req: Request, res: Response) => {
     const question = await Question.find({ where: { id: q.id } });
     const options = await Option.find({ where: { questionId: q.id } });
 
-    const questionWithOption = { ...question["0"], options: [...options] };
+    const optionStrings = [];
+    let correctOption;
+
+    for (const o of options) {
+      if (o.isCorrect) {
+        correctOption = o.option;
+      }
+      optionStrings.push(o.option);
+    }
+
+    const questionWithOption = {
+      description: question["0"].description,
+      question: question["0"].question,
+      sectionType: question["0"].sectionType,
+      correctOption,
+      options: optionStrings,
+    };
+
     quizQuestionsWithOptions.push(questionWithOption);
   }
 
