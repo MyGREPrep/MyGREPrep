@@ -85,7 +85,7 @@ const getQuestion = async (req: Request, res: Response) => {
     status: 201,
     payload: {
       question: questionWithOption,
-    }
+    },
   });
 };
 
@@ -104,16 +104,63 @@ const verifyAnswer = async (req: Request, res: Response) => {
   
   options.forEach((option)=>{
     if(option.isCorrect===true && selectedAnswer === option.option){
-      res.status(201).json({
+      return res.status(201).json({
         status: true,
       });
     }
   })
 
-  res.status(500).json({
+  return res.status(500).json({
     status: false,
   });
 }
+
+const generateMockTest = async (req: Request, res: Response) => {
+  const dataSource = req.app.locals.context.dataSource;
+
+  const questionIds = await dataSource.query(
+    `
+            select q.id
+            from question q
+            order by random() limit 10
+        `,
+    []
+  );
+
+  const questionsWithOptions: any = [];
+
+  for (const q of questionIds) {
+    const question = await Question.find({ where: { id: q.id } });
+    const options = await Option.find({ where: { questionId: q.id } });
+
+    const optionStrings = [];
+    let correctOption;
+
+    for (const o of options) {
+      if (o.isCorrect) {
+        correctOption = o.option;
+      }
+      optionStrings.push(o.option);
+    }
+
+    const questionWithOption = {
+      description: question["0"].description,
+      question: question["0"].question,
+      sectionType: question["0"].sectionType,
+      correctOption,
+      options: optionStrings,
+    };
+
+    questionsWithOptions.push(questionWithOption);
+  }
+
+  return res.status(201).json({
+    status: true,
+    payload: {
+      questions: questionsWithOptions,
+    },
+  });
+};
 
 export {
   createQuestion,
@@ -122,4 +169,5 @@ export {
   options,
   getQuestion,
   verifyAnswer,
+  generateMockTest,
 };
