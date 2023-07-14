@@ -97,10 +97,29 @@ const options = async (_: Request, res: Response) => {
   });
 };
 
+const verifyAnswer = async (req: Request, res: Response) => {
+  const questionId = req.body.questionId; 
+  const selectedAnswer = req.body.selectedAnswer; 
+  const options = await Option.find({ where: { questionId } });
+  
+  options.forEach((option)=>{
+    if(option.isCorrect===true && selectedAnswer === option.option){
+      res.status(201).json({
+        status: true,
+      });
+    }
+  })
+
+  res.status(500).json({
+    status: false,
+  });
+}
+
 export {
   createQuestion,
   getQuestionIds as questionIds,
   createOption,
   options,
   getQuestion,
+  verifyAnswer,
 };
