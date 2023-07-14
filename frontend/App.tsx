@@ -9,14 +9,14 @@ import { Ionicons } from "@expo/vector-icons";
 import Rewards from "./App/Components/Rewards";
 import DrawerContent from "./App/Components/DrawerContent";
 import AuthStack from "./App/Pages/AuthStack";
-import Board from "./App/Components/Leaderboard";
+import LeaderBoard from "./App/Components/Leaderboard";
 
 const Drawer = createDrawerNavigator();
 export default function App() {
   return (
     <NavigationContainer>
       <Drawer.Navigator
-        drawerContent={props => <DrawerContent {...props} />}
+        drawerContent={(props) => <DrawerContent {...props} />}
         screenOptions={{
           drawerActiveBackgroundColor: "#0782F9",
           drawerActiveTintColor: "#fff",
@@ -37,21 +37,21 @@ export default function App() {
           name="AboutUs"
           component={AboutUs}
           options={{
-            header: () => (<WelcomeHeader />),
+            header: () => <WelcomeHeader />,
           }}
         />
-         <Drawer.Screen
+        <Drawer.Screen
           name="Leaderboard"
-          component={Board}
+          component={LeaderBoard}
           options={{
-            header: () => (<WelcomeHeader />),
+            header: () => <WelcomeHeader />,
           }}
         />
         <Drawer.Screen
           name="Rewards"
           component={Rewards}
           options={{
-            header: () => (<WelcomeHeader />),
+            header: () => <WelcomeHeader />,
           }}
         />
       </Drawer.Navigator>
