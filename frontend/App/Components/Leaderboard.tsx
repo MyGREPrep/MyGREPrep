@@ -15,7 +15,8 @@ const Leaderboard = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        setMockTestScores(data.payload.mockTestScores);
+        
+        // setMockTestScores(data.payload.mockTestScores);
       })
       .catch((error) => {
         console.error("Error fetching topics:", error);
@@ -52,9 +53,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     paddingTop: 24,
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingBottom: 24,
+    backgroundColor: "#f7f7f7",
   },
   title: {
     fontSize: 24,
@@ -69,20 +68,34 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 8,
+    backgroundColor: "lightskyblue",
+    padding: 10,
+    borderRadius: 5,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   rank: {
     marginRight: 8,
     fontSize: 16,
-    fontWeight: "bold",
+    // fontWeight: "bold",
+    color: "#333",
   },
   username: {
     flex: 1,
     marginRight: 8,
     fontSize: 16,
+    color: "#333",
   },
   score: {
     fontSize: 16,
     fontWeight: "bold",
+    color: "#333",
   },
 });
 
