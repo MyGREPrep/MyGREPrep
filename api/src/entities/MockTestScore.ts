@@ -5,8 +5,7 @@ import{
     Entity,
     CreateDateColumn,
     UpdateDateColumn,
-    OneToOne,
-    JoinColumn,
+    ManyToOne,
 }from "typeorm";
 import {User} from "./User";
 
@@ -21,8 +20,7 @@ export class Mocktestscore extends BaseEntity{
     @Column()
     userId: number;
 
-    @OneToOne(() => User, (user) => user.id)
-    @JoinColumn()
+    @ManyToOne(() => User, (user) => user.mockTestScores)
     user: User;
 
     @CreateDateColumn()
