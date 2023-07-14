@@ -17,39 +17,57 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import SnackBar from "react-native-snackbar-component";
+import { BACKEND_URL } from "../constants";
 
 const Registration = () => {
+  const navigation = useNavigation();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
-  const [dob, setDob] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState<number>();
   const [error, setError] = useState(false);
 
   const handleRegistration = async () => {
     try {
+      
+      // Replace 'your-api-endpoint' with the actual endpoint to store user data
       const userCredentials = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
-      const user = userCredentials.user;
-      console.log("Registered with:", userCredentials);
+      
+      if (userCredentials) {
+        const user = userCredentials.user;
+        console.log("Registered with:", userCredentials);
 
-      // Make an API call to store the user data in your database
-      const userData = {
-        email: user.email,
-        username,
-        dob,
-      };
+        // Make an API call to store the user data in your database
+        const userData = {
+          email: user.email,
+          name,
+          password,
+          phoneNumber,
+          photoUrl: "https://img.freepik.com/premium-vector/man-avatar-profile-picture-vector-illustration_268834-538.jpg"
+        };
+        const response = await fetch(`${BACKEND_URL}/user/register`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(userData),
+        });
 
-      // Replace 'your-api-endpoint' with the actual endpoint to store user data
-      const response = await fetch('your-api-endpoint', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
-      });
+        console.log(response);
+
+        if (response.status) {
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{ name: "Home" }],
+            })
+          );
+        }
+      }
 
       // Handle the API response 
 
@@ -63,6 +81,12 @@ const Registration = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Registration</Text>
       <TextInput
+        placeholder="Name"
+        value={name}
+        onChangeText={(text) => setName(text)}
+        style={styles.input}
+      />
+      <TextInput
         placeholder="Email"
         value={email.trim()}
         onChangeText={(text) => setEmail(text)}
@@ -75,17 +99,14 @@ const Registration = () => {
         style={styles.input}
         secureTextEntry
       />
+      
       <TextInput
-        placeholder="Username"
-        value={username}
-        onChangeText={(text) => setUsername(text)}
+        placeholder="Phone Number"
+        value={phoneNumber ? phoneNumber.toString():null}
+        onChangeText={(text) => setPhoneNumber(parseInt(text))}
         style={styles.input}
-      />
-      <TextInput
-        placeholder="Date of Birth"
-        value={dob}
-        onChangeText={(text) => setDob(text)}
-        style={styles.input}
+        maxLength={10}
+        keyboardType="number-pad"
       />
       <TouchableOpacity onPress={handleRegistration} style={styles.button}>
         <Text style={styles.buttonText}>Register</Text>

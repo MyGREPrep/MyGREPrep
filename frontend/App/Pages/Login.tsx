@@ -45,6 +45,14 @@ const Login = () => {
     return unsubscribe;
   }, []);
 
+  const handleRegister = ()=>{
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: "Registration" }],
+      })
+    );
+  }
   const handleSignUp = async () => {
     try {
       const userCredentials = await createUserWithEmailAndPassword(
@@ -138,7 +146,7 @@ const Login = () => {
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={handleSignUp}
+          onPress={handleRegister}
           style={[styles.button, styles.buttonOutline]}
         >
           <Text style={styles.buttonOutlineText}>Register</Text>
