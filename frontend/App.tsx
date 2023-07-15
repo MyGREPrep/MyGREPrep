@@ -12,6 +12,7 @@ import AuthStack from "./App/Pages/AuthStack";
 import LeaderBoard from "./App/Components/Leaderboard";
 import Board from "./App/Components/Leaderboard";
 import Tips from "./App/Components/Tips";
+import CompleteMockTest from "./App/Components/CompleteMockTest";
 
 const Drawer = createDrawerNavigator();
 export default function App() {
@@ -52,6 +53,13 @@ export default function App() {
         <Drawer.Screen
           name="Rewards"
           component={Rewards}
+          options={{
+            header: () => <WelcomeHeader />,
+          }}
+        />
+        <Drawer.Screen
+          name="Mock Test"
+          component={CompleteMockTest}
           options={{
             header: () => <WelcomeHeader />,
           }}

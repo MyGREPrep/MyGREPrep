@@ -5,10 +5,8 @@ import Quiz from "./Quiz";
 function TopicDetails({ route }) {
   const { topics, navigation } = route.params;
 
-  console.log("LUQ", topics.quiz);
   const handleStartQuiz = () => {
     navigation.navigate("Quiz", {
-      hello: "joel",
       quiz: topics.quiz,
     });
   };
