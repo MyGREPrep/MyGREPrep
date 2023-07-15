@@ -6,9 +6,21 @@ import { BACKEND_URL } from "../constants";
 const SectionDetailsComponent = ({ route }) => {
   const { sectionTitle, sectionDescription, sectionTopics, navigation } =
     route.params;
+    const makeFirstCharUppercase = (str: string): string => {
+      if (str.length === 0) {
+        return str;
+      }
 
+      const firstChar = str.charAt(0).toUpperCase();
+      const remainingChars = str.slice(1);
+    
+      return firstChar + remainingChars;
+    };
+   
+    
   const handleButtonPress = (topic) => {
     // API call to fetch topics
+
     fetch(`${BACKEND_URL}/topic/get-topic?topic=${topic}`, {
       method: "POST",
       headers: {
@@ -19,9 +31,7 @@ const SectionDetailsComponent = ({ route }) => {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        // Process the fetched topics
 
-        // Navigate to a different screen
         navigation.navigate("TopicDetails", {
           topics: data.payload.topic,
           navigation: navigation,
@@ -44,17 +54,10 @@ const SectionDetailsComponent = ({ route }) => {
               style={styles.topic}
               onPress={
                 () => handleButtonPress(value)
-                // navigation.navigate("TopicDetails", {
-                //   topicId: 1,
-                //   topicDescription: "Loren Ipsum",
-                //   topicSignificance: "high",
-                //   topicVideo: "www.URL.com",
-                //   navigation: navigation,
-                // })
               }
             >
               <View style={styles.textContainer}>
-                <Text style={styles.sectionTitle}>{value}</Text>
+                <Text style={styles.sectionTitle}>{makeFirstCharUppercase(value)}</Text>
               </View>
             </TouchableOpacity>
           );

@@ -9,19 +9,29 @@ import {
   Modal,
   Animated,
 } from "react-native";
-import { COLORS, SIZES } from "../constants";
+import { BACKEND_URL, COLORS, SIZES } from "../constants";
+import data from "../QuizData/RatioQuiz";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Colors from "../Shared/Colors";
-import { CommonActions, useNavigation } from "@react-navigation/native";
+import { CommonActions, DrawerActions, useNavigation } from "@react-navigation/native";
 
-const Quiz = ({ route }) => {
-  const { quiz } = route.params;
- 
+const CompleteMockTest = ({ route }) => {
   const [questions, setQuestions] = useState([]);
   useEffect(() => {
-    setQuestions(quiz);
+    fetchQuestionsFromAPI()
+      .then((data) => {
+        setQuestions(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
-
+  const fetchQuestionsFromAPI = async () => {
+    // Fetch questions from API endpoint
+    const response = await fetch(`${BACKEND_URL}/question/generate-mock-test`);
+    const data = await response.json();
+    return data.payload.questions;
+  };
   const allQuestions = questions;
   const navigation = useNavigation();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -38,7 +48,7 @@ const Quiz = ({ route }) => {
     setIsOptionsDisabled(true);
     if (selectedOption == correct_option) {
       // Set Score
-      setScore(score + 5);
+      setScore(score + 1);
     }
     // Show Next Button
     setShowNextButton(true);
@@ -360,17 +370,17 @@ const Quiz = ({ route }) => {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => {
-                    console.log("Pressed")
-                    navigation.dispatch(
-                      CommonActions.reset({
-                        index: 0,
-                        routes: [{ name: "Home" }],
-                      })
-                    );
-                
-                  //  navigation.goBack();
-                }}
+               onPress={() => {
+                setShowScoreModal(false);
+                navigation.dispatch(
+                  CommonActions.reset({
+                    index: 0,
+                    routes: [{ name: "MyGREPrep" }],
+                  })
+                );
+              
+            
+            }}
                 style={{
                   backgroundColor: "#0782F9",
                   width: "100%",
@@ -396,4 +406,4 @@ const Quiz = ({ route }) => {
   );
 };
 
-export default Quiz;
+export default CompleteMockTest;
