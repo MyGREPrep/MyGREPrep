@@ -97,6 +97,24 @@ const options = async (_: Request, res: Response) => {
   });
 };
 
+const verifyAnswer = async (req: Request, res: Response) => {
+  const questionId = req.body.questionId; 
+  const selectedAnswer = req.body.selectedAnswer; 
+  const options = await Option.find({ where: { questionId } });
+  
+  options.forEach((option)=>{
+    if(option.isCorrect===true && selectedAnswer === option.option){
+      return res.status(201).json({
+        status: true,
+      });
+    }
+  })
+
+  return res.status(500).json({
+    status: false,
+  });
+}
+
 const generateMockTest = async (req: Request, res: Response) => {
   const dataSource = req.app.locals.context.dataSource;
 
@@ -150,5 +168,6 @@ export {
   createOption,
   options,
   getQuestion,
+  verifyAnswer,
   generateMockTest,
 };
