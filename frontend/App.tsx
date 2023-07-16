@@ -12,6 +12,8 @@ import AuthStack from "./App/Pages/AuthStack";
 import LeaderBoard from "./App/Components/Leaderboard";
 import Board from "./App/Components/Leaderboard";
 import Tips from "./App/Components/Tips";
+import CompleteMockTest from "./App/Components/CompleteMockTest";
+import PremiumSubscription from "./App/Components/PremiumSubscription";
 
 const Drawer = createDrawerNavigator();
 export default function App() {
@@ -57,8 +59,22 @@ export default function App() {
           }}
         />
         <Drawer.Screen
+          name="Mock Test"
+          component={CompleteMockTest}
+          options={{
+            header: () => <WelcomeHeader />,
+          }}
+        />
+        <Drawer.Screen
           name="Tips"
           component={Tips}
+          options={{
+            header: () => <WelcomeHeader />,
+          }}
+        />
+        <Drawer.Screen
+          name="Premium Subscription"
+          component={PremiumSubscription}
           options={{
             header: () => <WelcomeHeader />,
           }}

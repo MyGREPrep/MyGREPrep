@@ -26,7 +26,7 @@ export class User extends BaseEntity {
   @Column()
   photoUrl!: string;
 
-  @Column({ type: "int", nullable: true })
+  @Column({ type: "bigint", nullable: true })
   phoneNumber: number | null;
 
   @Column({type: "int", default: 0})

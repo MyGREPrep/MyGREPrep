@@ -10,6 +10,7 @@ import SectionsScreen from "../Components/SectionsScreen";
 import SectionDetailsComponent from "../Components/SectionDetailsComponent";
 import TopicDetails from "../Components/TopicDetails";
 import Quiz from "../Components/Quiz";
+import Registration from "./Registration";
 
 function AuthStack() {
   const Stack = createNativeStackNavigator();
@@ -66,6 +67,11 @@ function AuthStack() {
       <Stack.Screen
         name="Quiz"
         component={Quiz}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Registration"
+        component={Registration}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
