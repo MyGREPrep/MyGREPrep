@@ -53,7 +53,18 @@ const SectionDetailsComponent = ({ route }) => {
               key={index}
               style={styles.topic}
               onPress={
-                () => handleButtonPress(value)
+                () => {
+                  if(value == 'Issue Section') {
+                    navigation.navigate("IssueSection")
+                  }
+                  else if (value == 'Argument Section') {
+                      navigation.navigate("ArgumentSection")
+                  }
+                  else{
+
+                    handleButtonPress(value)
+                  }
+                }
               }
             >
               <View style={styles.textContainer}>

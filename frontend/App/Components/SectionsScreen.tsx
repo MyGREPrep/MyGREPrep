@@ -36,7 +36,7 @@ const SectionsScreen = ({ navigation }) => {
       description:
         "Measures critical thinking and analytical writing skills, including your ability to articulate complex ideas clearly and effectively.",
       icon: require("../Assets/Images/analytics.png"),
-      topics: ["Writing1", "Writing2"],
+      topics: ["Issue Section", "Argument Section"],
     },
   ];
 
