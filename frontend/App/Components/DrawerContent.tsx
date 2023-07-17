@@ -16,9 +16,9 @@ const DrawerContent = (props) => {
     auth
       .signOut()
       .then(async () => {
-        props.navigation.navigate('Login');
+        props.navigation.navigate("Login");
         props.navigation.closeDrawer();
-        await AsyncStorage.setItem('userEmail', "");
+        await AsyncStorage.setItem("userEmail", "");
       })
       .catch((error) => alert(error.message));
   };
