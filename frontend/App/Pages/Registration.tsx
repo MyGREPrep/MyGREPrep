@@ -79,6 +79,15 @@ const Registration = () => {
     }
   };
 
+  const handleGoBackToLogin = () => {
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: "Login" }],
+      })
+    );
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Registration</Text>
@@ -114,6 +123,9 @@ const Registration = () => {
         <Text style={styles.buttonText}>Register</Text>
       </TouchableOpacity>
       {error && <Text style={styles.errorText}>Registration error</Text>}
+      <TouchableOpacity onPress={handleGoBackToLogin}>
+        <Text style={styles.loginLink}>Go back to login</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -155,5 +167,10 @@ const styles = StyleSheet.create({
   errorText: {
     color: "red",
     marginTop: 10,
+  },
+  loginLink: {
+    marginTop: 20,
+    color: "blue",
+    textDecorationLine: "underline",
   },
 });
