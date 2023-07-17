@@ -99,7 +99,7 @@ const Registration = () => {
       />
       <TextInput
         placeholder="Email"
-        value={email.trim()}
+        value={email.trim().toLowerCase()}
         onChangeText={(text) => setEmail(text)}
         style={styles.input}
       />
