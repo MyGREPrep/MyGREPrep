@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 
 const SectionsScreen = ({ navigation }) => {
@@ -41,7 +41,7 @@ const SectionsScreen = ({ navigation }) => {
   ];
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       {sections.map((section) => (
         <TouchableOpacity
           key={section.id}
@@ -64,13 +64,13 @@ const SectionsScreen = ({ navigation }) => {
           </View>
         </TouchableOpacity>
       ))}
-    </View>
+     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
