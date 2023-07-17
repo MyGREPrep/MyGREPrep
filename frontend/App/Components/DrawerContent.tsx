@@ -7,6 +7,7 @@ import {
   DrawerItemList,
 } from "@react-navigation/drawer";
 import React from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const DrawerContent = (props) => {
   const navigation = useNavigation();
@@ -14,9 +15,10 @@ const DrawerContent = (props) => {
   const handleSignOut = () => {
     auth
       .signOut()
-      .then(() => {
+      .then(async () => {
         props.navigation.navigate('Login');
         props.navigation.closeDrawer();
+        await AsyncStorage.setItem('userEmail', "");
       })
       .catch((error) => alert(error.message));
   };

@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { User } from "../entities/User";
 
 const getRewards = async (req: Request, res: Response) => {
-  const user = await User.find({ where: { email: req.body.userEmail } });
+  const user = await User.findOne({ where: { email: req.body.userEmail } });
 
   if (!user) {
     return res.status(500).json({
@@ -13,10 +13,12 @@ const getRewards = async (req: Request, res: Response) => {
     });
   }
 
+  console.log(user)
+
   return res.status(201).json({
     status: true,
     payload: {
-      reward: user[0].rewards,
+      reward: user.rewards,
     },
   });
 };

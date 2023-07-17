@@ -17,6 +17,7 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import SnackBar from "react-native-snackbar-component";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -96,6 +97,7 @@ const Login = () => {
         password
       );
       const user = userCredentials.user;
+      await AsyncStorage.setItem('userEmail', user.email);
       console.log("Logged in with:", userCredentials);
     } catch (err) {
       setLoginError(true);

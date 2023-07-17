@@ -14,7 +14,7 @@
     "prettier:write": "node -e \"console.log('dummy prettier')\""
   },
   "dependencies": {
-    "@react-native-async-storage/async-storage": "1.17.11",
+    "@react-native-async-storage/async-storage": "^1.19.0",
     "@react-navigation/drawer": "^6.6.2",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",

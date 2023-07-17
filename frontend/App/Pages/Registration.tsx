@@ -18,6 +18,7 @@ import {
 } from "firebase/auth";
 import SnackBar from "react-native-snackbar-component";
 import { BACKEND_URL } from "../constants";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Registration = () => {
   const navigation = useNavigation();
@@ -60,6 +61,7 @@ const Registration = () => {
         console.log(response);
 
         if (response.status) {
+           await AsyncStorage.setItem('userEmail', email);
           navigation.dispatch(
             CommonActions.reset({
               index: 0,
