@@ -7,15 +7,18 @@ import {
   DrawerItemList,
 } from "@react-navigation/drawer";
 import React from "react";
+import { useEmail } from "../state/useEmail";
 
 const DrawerContent = (props) => {
   const navigation = useNavigation();
+  const addEmail = useEmail((state) => state.addEmail);
 
   const handleSignOut = () => {
     auth
       .signOut()
-      .then(() => {
-        props.navigation.navigate('Login');
+      .then(async () => {
+        addEmail(null);
+        props.navigation.navigate("Login");
         props.navigation.closeDrawer();
       })
       .catch((error) => alert(error.message));

@@ -1,13 +1,62 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { BACKEND_URL } from "../constants";
+import { useEmail } from "../state/useEmail";
 
 const Rewards = () => {
+  const [rewards, setRewards] = React.useState<number | null>(null);
+  const email = useEmail((state) => state.email);
+
+  React.useEffect(() => {
+    // API call to fetch rewards
+    fetch(`${BACKEND_URL}/rewards/get-rewards`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userEmail: email,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("first: ", data.payload.reward);
+        setRewards(data.payload.reward);
+      })
+      .catch((error) => {
+        console.error("Error fetching topics:", error);
+      });
+  }, [email]);
+
+  const handleRefreshRewards = () => {
+    // API call to fetch rewards
+    fetch(`${BACKEND_URL}/rewards/get-rewards`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userEmail: email,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("second: ", data.payload.reward);
+        setRewards(data.payload.reward);
+      })
+      .catch((error) => {
+        console.error("Error fetching topics:", error);
+      });
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Rewards</Text>
-      <Text style={styles.description}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae ultrices tortor. Integer euismod nisl id erat finibus, et dictum mi ullamcorper. Nullam euismod augue ut tincidunt bibendum. Suspendisse semper elit vel erat iaculis, vel sagittis urna sagittis. Duis cursus placerat mauris, sed auctor odio. In hac habitasse platea dictumst.
-      </Text>
+      {rewards ? <Text style={styles.rewardTitle}>{rewards}</Text> : null}
+      {email ? <Text style={styles.description}>Hey, {email}</Text> : null}
+      <TouchableOpacity onPress={handleRefreshRewards} style={styles.button}>
+        <Text style={styles.buttonText}>Refresh</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -15,18 +64,36 @@ const Rewards = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    paddingTop: 20,
+    justifyContent: "center",
+    alignItems: "center",
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: 40,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  rewardTitle: {
+    fontSize: 150,
+    fontWeight: "bold",
     marginBottom: 10,
   },
   description: {
     fontSize: 16,
-    textAlign: 'center',
+    textAlign: "center",
+  },
+  button: {
+    backgroundColor: "#0782F9",
+    width: "80%",
+    padding: 15,
+    borderRadius: 10,
+    alignItems: "center",
+    marginTop: 20,
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "700",
+    fontSize: 16,
   },
 });
 
