@@ -9,7 +9,11 @@ const SectionsScreen = ({ navigation }) => {
       description:
         "Assesses your ability to analyze and evaluate written material and synthesize information obtained from it.",
       icon: require("../Assets/Images/idea.png"),
-      topics: ["English", "Learn"],
+      topics: [
+        "reading comprehension", 
+        "text completion",
+        "sentence equivalence"
+      ],
     },
     {
       id: "2",
@@ -19,15 +23,15 @@ const SectionsScreen = ({ navigation }) => {
       icon: require("../Assets/Images/calculator.png"),
       topics: [
         "ratio",
-        "Percentage",
-        "Fraction",
-        "Arithmetic",
-        "Algebra",
-        "Word Problems",
-        "Powers",
-        "Roots",
-        "Geometry",
-        "Data Analysis",
+        "percentage",
+        "fraction",
+        "arithmetic",
+        "algebra",
+        "word problems",
+        "powers",
+        "roots",
+        "geometry",
+        "data analysis",
       ],
     },
     {
