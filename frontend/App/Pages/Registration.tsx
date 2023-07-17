@@ -18,7 +18,6 @@ import {
 } from "firebase/auth";
 import SnackBar from "react-native-snackbar-component";
 import { BACKEND_URL } from "../constants";
-import { useEmail } from "../state/useEmail";
 
 const Registration = () => {
   const navigation = useNavigation();
@@ -27,7 +26,6 @@ const Registration = () => {
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState<number>();
   const [error, setError] = useState(false);
-  const addEmail = useEmail((state) => state.addEmail);
 
   const handleRegistration = async () => {
     try {
@@ -37,7 +35,7 @@ const Registration = () => {
         email,
         password
       );
-
+      
       if (userCredentials) {
         const user = userCredentials.user;
         console.log("Registered with:", userCredentials);
@@ -48,13 +46,12 @@ const Registration = () => {
           name,
           password,
           phoneNumber,
-          photoUrl:
-            "https://img.freepik.com/premium-vector/man-avatar-profile-picture-vector-illustration_268834-538.jpg",
+          photoUrl: "https://img.freepik.com/premium-vector/man-avatar-profile-picture-vector-illustration_268834-538.jpg"
         };
         const response = await fetch(`${BACKEND_URL}/user/register`, {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify(userData),
         });
@@ -62,7 +59,6 @@ const Registration = () => {
         console.log(response);
 
         if (response.status) {
-          addEmail(email);
           navigation.dispatch(
             CommonActions.reset({
               index: 0,
@@ -72,11 +68,20 @@ const Registration = () => {
         }
       }
 
-      // Handle the API response
+      // Handle the API response 
     } catch (err) {
       setError(true);
       console.log("Error with sign up", err);
     }
+  };
+
+  const handleGoBackToLogin = () => {
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: "Login" }],
+      })
+    );
   };
 
   return (
@@ -90,7 +95,7 @@ const Registration = () => {
       />
       <TextInput
         placeholder="Email"
-        value={email.trim().toLowerCase()}
+        value={email.trim()}
         onChangeText={(text) => setEmail(text)}
         style={styles.input}
       />
@@ -101,7 +106,7 @@ const Registration = () => {
         style={styles.input}
         secureTextEntry
       />
-
+      
       <TextInput
         placeholder="Phone Number"
         value={phoneNumber ? phoneNumber.toString() : null}
@@ -114,6 +119,9 @@ const Registration = () => {
         <Text style={styles.buttonText}>Register</Text>
       </TouchableOpacity>
       {error && <Text style={styles.errorText}>Registration error</Text>}
+      <TouchableOpacity onPress={handleGoBackToLogin}>
+        <Text style={styles.loginLink}>Go back to login</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -155,5 +163,10 @@ const styles = StyleSheet.create({
   errorText: {
     color: "red",
     marginTop: 10,
+  },
+  loginLink: {
+    marginTop: 20,
+    color: "blue",
+    textDecorationLine: "underline",
   },
 });
