@@ -1,21 +1,36 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import Quiz from "./Quiz";
+import Video from "react-native-video";
+import YoutubePlayer from "react-native-youtube-iframe";
 
 function TopicDetails({ route }) {
   const { topics, navigation } = route.params;
+  const [playing, setPlaying] = React.useState(false);
+
+  const onStateChange = React.useCallback((state) => {
+    if (state === "ended") {
+      setPlaying(false);
+    }
+  }, []);
 
   const handleStartQuiz = () => {
     navigation.navigate("Quiz", {
       quiz: topics.quiz,
     });
   };
+
   return (
     <View style={{ margin: 18 }}>
       <Text style={styles.description}>{topics.description}</Text>
       <Text style={styles.significance}>{topics.significance}</Text>
       <View style={styles.videoContainer}>
-        {/* video component goes here */}
+        <YoutubePlayer
+          height={220}
+          play={playing}
+          videoId="afUJ1H3Df_A"
+          onChangeState={onStateChange}
+        />
       </View>
       <TouchableOpacity
         style={styles.startQuizButton}
