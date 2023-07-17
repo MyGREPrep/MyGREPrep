@@ -17,7 +17,7 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import SnackBar from "react-native-snackbar-component";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEmail } from "../state/useEmail";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -27,6 +27,7 @@ const Login = () => {
   const [error, setError] = useState(false);
   const [loginError, setLoginError] = useState(false);
   const [msg, setMsg] = useState("");
+  const addEmail = useEmail((state) => state.addEmail);
 
   const navigation = useNavigation();
   const icon = require("./../Assets/Images/mygreprep.jpeg");
@@ -46,14 +47,14 @@ const Login = () => {
     return unsubscribe;
   }, []);
 
-  const handleRegister = ()=>{
+  const handleRegister = () => {
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
         routes: [{ name: "Registration" }],
       })
     );
-  }
+  };
   const handleSignUp = async () => {
     try {
       const userCredentials = await createUserWithEmailAndPassword(
@@ -79,7 +80,9 @@ const Login = () => {
         if (response.ok) {
           console.log("User information stored in the leadership database");
         } else {
-          console.log("Failed to store user information in the leadership database");
+          console.log(
+            "Failed to store user information in the leadership database"
+          );
         }
       }
     } catch (err) {
@@ -97,7 +100,7 @@ const Login = () => {
         password
       );
       const user = userCredentials.user;
-      await AsyncStorage.setItem('userEmail', user.email);
+      addEmail(user.email);
       console.log("Logged in with:", userCredentials);
     } catch (err) {
       setLoginError(true);
@@ -130,7 +133,7 @@ const Login = () => {
       <View style={styles.inputContainer}>
         <TextInput
           placeholder="Email"
-          value={email.trim()}
+          value={email.trim().toLowerCase()}
           onChangeText={(text) => setEmail(text)}
           style={styles.input}
         />

@@ -18,7 +18,7 @@ import {
 } from "firebase/auth";
 import SnackBar from "react-native-snackbar-component";
 import { BACKEND_URL } from "../constants";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEmail } from "../state/useEmail";
 
 const Registration = () => {
   const navigation = useNavigation();
@@ -27,17 +27,17 @@ const Registration = () => {
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState<number>();
   const [error, setError] = useState(false);
+  const addEmail = useEmail((state) => state.addEmail);
 
   const handleRegistration = async () => {
     try {
-      
       // Replace 'your-api-endpoint' with the actual endpoint to store user data
       const userCredentials = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
-      
+
       if (userCredentials) {
         const user = userCredentials.user;
         console.log("Registered with:", userCredentials);
@@ -48,12 +48,13 @@ const Registration = () => {
           name,
           password,
           phoneNumber,
-          photoUrl: "https://img.freepik.com/premium-vector/man-avatar-profile-picture-vector-illustration_268834-538.jpg"
+          photoUrl:
+            "https://img.freepik.com/premium-vector/man-avatar-profile-picture-vector-illustration_268834-538.jpg",
         };
         const response = await fetch(`${BACKEND_URL}/user/register`, {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify(userData),
         });
@@ -61,7 +62,7 @@ const Registration = () => {
         console.log(response);
 
         if (response.status) {
-           await AsyncStorage.setItem('userEmail', email);
+          addEmail(email);
           navigation.dispatch(
             CommonActions.reset({
               index: 0,
@@ -71,8 +72,7 @@ const Registration = () => {
         }
       }
 
-      // Handle the API response 
-
+      // Handle the API response
     } catch (err) {
       setError(true);
       console.log("Error with sign up", err);
@@ -90,7 +90,7 @@ const Registration = () => {
       />
       <TextInput
         placeholder="Email"
-        value={email.trim()}
+        value={email.trim().toLowerCase()}
         onChangeText={(text) => setEmail(text)}
         style={styles.input}
       />
@@ -101,10 +101,10 @@ const Registration = () => {
         style={styles.input}
         secureTextEntry
       />
-      
+
       <TextInput
         placeholder="Phone Number"
-        value={phoneNumber ? phoneNumber.toString():null}
+        value={phoneNumber ? phoneNumber.toString() : null}
         onChangeText={(text) => setPhoneNumber(parseInt(text))}
         style={styles.input}
         maxLength={10}

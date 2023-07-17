@@ -1,22 +1,11 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { BACKEND_URL } from "../constants";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEmail } from "../state/useEmail";
 
 const Rewards = () => {
   const [rewards, setRewards] = React.useState<number | null>(null);
-  const [userEmail, setUserEmail] = React.useState<string | null>(null);
-
-  const getEmail = async () => {
-    const email = await AsyncStorage.getItem("userEmail");
-    if (email) {
-      setUserEmail(email);
-    }
-  };
-
-  React.useEffect(() => {
-    getEmail();
-  }, []);
+  const email = useEmail((state) => state.email);
 
   React.useEffect(() => {
     // API call to fetch rewards
@@ -26,17 +15,18 @@ const Rewards = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        userEmail,
+        userEmail: email,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log("first: ", data.payload.reward);
         setRewards(data.payload.reward);
       })
       .catch((error) => {
         console.error("Error fetching topics:", error);
       });
-  }, [userEmail]);
+  }, [email]);
 
   const handleRefreshRewards = () => {
     // API call to fetch rewards
@@ -46,11 +36,12 @@ const Rewards = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        userEmail,
+        userEmail: email,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log("second: ", data.payload.reward);
         setRewards(data.payload.reward);
       })
       .catch((error) => {
@@ -62,9 +53,7 @@ const Rewards = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Rewards</Text>
       {rewards ? <Text style={styles.rewardTitle}>{rewards}</Text> : null}
-      {userEmail ? (
-        <Text style={styles.description}>Hey, {userEmail}</Text>
-      ) : null}
+      {email ? <Text style={styles.description}>Hey, {email}</Text> : null}
       <TouchableOpacity onPress={handleRefreshRewards} style={styles.button}>
         <Text style={styles.buttonText}>Refresh</Text>
       </TouchableOpacity>
