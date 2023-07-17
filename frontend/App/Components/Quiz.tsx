@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Modal,
   Animated,
+  ScrollView,
 } from "react-native";
 import { COLORS, SIZES } from "../constants";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -16,7 +17,7 @@ import { CommonActions, useNavigation } from "@react-navigation/native";
 
 const Quiz = ({ route }) => {
   const { quiz } = route.params;
- 
+
   const [questions, setQuestions] = useState([]);
   useEffect(() => {
     setQuestions(quiz);
@@ -38,7 +39,7 @@ const Quiz = ({ route }) => {
     setIsOptionsDisabled(true);
     if (selectedOption == correct_option) {
       // Set Score
-      setScore(score + 5);
+      setScore(score + 1);
     }
     // Show Next Button
     setShowNextButton(true);
@@ -80,7 +81,7 @@ const Quiz = ({ route }) => {
 
   const renderQuestion = () => {
     return (
-      <View
+      <ScrollView
         style={{
           marginVertical: 40,
         }}
@@ -116,12 +117,12 @@ const Quiz = ({ route }) => {
         >
           {allQuestions[currentQuestionIndex]?.question}
         </Text>
-      </View>
+      </ScrollView>
     );
   };
   const renderOptions = () => {
     return (
-      <View>
+      <ScrollView>
         {allQuestions[currentQuestionIndex]?.options.map((option) => (
           <TouchableOpacity
             onPress={() => validateAnswer(option)}
@@ -194,7 +195,7 @@ const Quiz = ({ route }) => {
             ) : null}
           </TouchableOpacity>
         ))}
-      </View>
+      </ScrollView>
     );
   };
   const renderNextButton = () => {
@@ -262,7 +263,7 @@ const Quiz = ({ route }) => {
       }}
     >
       <StatusBar barStyle="light-content" backgroundColor={COLORS.primary} />
-      <View
+      <ScrollView
         style={{
           flex: 1,
           paddingVertical: 40,
@@ -361,14 +362,14 @@ const Quiz = ({ route }) => {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                    console.log("Pressed")
-                    navigation.dispatch(
-                      CommonActions.reset({
-                        index: 0,
-                        routes: [{ name: "Home" }],
-                      })
-                    );
-                
+                  console.log("Pressed");
+                  navigation.dispatch(
+                    CommonActions.reset({
+                      index: 0,
+                      routes: [{ name: "Home" }],
+                    })
+                  );
+
                   //  navigation.goBack();
                 }}
                 style={{
@@ -391,7 +392,7 @@ const Quiz = ({ route }) => {
             </View>
           </View>
         </Modal>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
