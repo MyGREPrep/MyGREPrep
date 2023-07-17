@@ -1,6 +1,6 @@
 import { CommonActions, useNavigation } from "@react-navigation/core";
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity,ScrollView } from "react-native";
 import { BACKEND_URL } from "../constants";
 
 const SectionDetailsComponent = ({ route }) => {
@@ -43,7 +43,7 @@ const SectionDetailsComponent = ({ route }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.sectionTitle}>{sectionTitle}</Text>
       <Text style={styles.sectionDescription}>{sectionDescription}</Text>
       <View style={{ marginTop: 20 }}>
@@ -53,7 +53,18 @@ const SectionDetailsComponent = ({ route }) => {
               key={index}
               style={styles.topic}
               onPress={
-                () => handleButtonPress(value)
+                () => {
+                  if(value == 'Issue Section') {
+                    navigation.navigate("IssueSection")
+                  }
+                  else if (value == 'Argument Section') {
+                      navigation.navigate("ArgumentSection")
+                  }
+                  else{
+
+                    handleButtonPress(value)
+                  }
+                }
               }
             >
               <View style={styles.textContainer}>
@@ -63,16 +74,17 @@ const SectionDetailsComponent = ({ route }) => {
           );
         })}
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     justifyContent: "flex-start",
     alignItems: "center",
     paddingTop: 40,
+    paddingBottom: 16,
   },
   sectionTitle: {
     fontSize: 18,

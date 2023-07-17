@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 
 const SectionsScreen = ({ navigation }) => {
@@ -9,7 +9,11 @@ const SectionsScreen = ({ navigation }) => {
       description:
         "Assesses your ability to analyze and evaluate written material and synthesize information obtained from it.",
       icon: require("../Assets/Images/idea.png"),
-      topics: ["English", "Learn"],
+      topics: [
+        "reading comprehension", 
+        "text completion",
+        "sentence equivalence"
+      ],
     },
     {
       id: "2",
@@ -19,15 +23,15 @@ const SectionsScreen = ({ navigation }) => {
       icon: require("../Assets/Images/calculator.png"),
       topics: [
         "ratio",
-        "Percentage",
-        "Fraction",
-        "Arithmetic",
-        "Algebra",
-        "Word Problems",
-        "Powers",
-        "Roots",
-        "Geometry",
-        "Data Analysis",
+        "percentage",
+        "fraction",
+        "arithmetic",
+        "algebra",
+        "word problems",
+        "powers",
+        "roots",
+        "geometry",
+        "data analysis",
       ],
     },
     {
@@ -36,12 +40,12 @@ const SectionsScreen = ({ navigation }) => {
       description:
         "Measures critical thinking and analytical writing skills, including your ability to articulate complex ideas clearly and effectively.",
       icon: require("../Assets/Images/analytics.png"),
-      topics: ["Writing1", "Writing2"],
+      topics: ["Issue Section", "Argument Section"],
     },
   ];
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       {sections.map((section) => (
         <TouchableOpacity
           key={section.id}
@@ -64,13 +68,13 @@ const SectionsScreen = ({ navigation }) => {
           </View>
         </TouchableOpacity>
       ))}
-    </View>
+     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
