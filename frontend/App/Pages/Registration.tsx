@@ -40,7 +40,7 @@ const Registration = () => {
 
       if (userCredentials) {
         const user = userCredentials.user;
-        console.log("Registered with:", userCredentials);
+        console.log("Registered with:", JSON.stringify(userCredentials));
 
         // Make an API call to store the user data in your database
         const userData = {
@@ -59,8 +59,6 @@ const Registration = () => {
           body: JSON.stringify(userData),
         });
 
-        console.log(response);
-
         if (response.status) {
           addEmail(email);
           navigation.dispatch(
@@ -75,7 +73,7 @@ const Registration = () => {
       // Handle the API response
     } catch (err) {
       setError(true);
-      console.log("Error with sign up", err);
+      console.log("Error with sign up", JSON.stringify(err));
     }
   };
 

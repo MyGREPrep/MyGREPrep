@@ -3,6 +3,11 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import Quiz from "./Quiz";
 import Video from "react-native-video";
 import YoutubePlayer from "react-native-youtube-iframe";
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
 
 function TopicDetails({ route }) {
   const { topics, navigation } = route.params;
