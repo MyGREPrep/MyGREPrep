@@ -145,7 +145,7 @@ const changePassword = async (req: Request, res: Response) => {
 };
 
 const upgradeToPremium = async (req: Request, res: Response) => {
-  const userEmail = req.body.userEmail; 
+  const userEmail = req.body.email;
   try {
     // Find the user in the database based on their email
     const user = await User.findOne({ where: { email: userEmail } });
@@ -157,8 +157,10 @@ const upgradeToPremium = async (req: Request, res: Response) => {
         },
       });
     }
-    user.isPremium = true;
-    await user.save();
+
+    // mock the payment processing and verification
+
+    await User.update({ email: user.email }, { isPremium: true });
 
     return res.status(201).json({
       status: true,
@@ -169,9 +171,16 @@ const upgradeToPremium = async (req: Request, res: Response) => {
   } catch (error) {
     return res.status(500).json({
       status: false,
-      message: 'Failed to upgrade user to premium.',
+      payload: { message: "Failed to upgrade user to premium." },
     });
   }
 };
 
-export { registerUser, upgradeToPremium, users, forgotPassword, changePassword, verifyOtp };
+export {
+  registerUser,
+  upgradeToPremium,
+  users,
+  forgotPassword,
+  changePassword,
+  verifyOtp,
+};
