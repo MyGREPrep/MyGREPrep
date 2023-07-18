@@ -14,6 +14,7 @@
     "prettier:write": "node -e \"console.log('dummy prettier')\""
   },
   "dependencies": {
+    "@expo/webpack-config": "^18.0.1",
     "@react-native-async-storage/async-storage": "^1.19.0",
     "@react-navigation/drawer": "^6.6.2",
     "@react-navigation/native": "^6.1.6",
@@ -32,6 +33,7 @@
     "expo-web-browser": "~12.1.1",
     "firebase": "^9.21.0",
     "react": "^18.2.0",
+    "react-dom": "18.2.0",
     "react-markdown": "^8.0.7",
     "react-native": "^0.71.3",
     "react-native-camera": "^4.2.1",
@@ -51,6 +53,7 @@
     "react-native-snackbar-component": "^1.1.12",
     "react-native-video": "^5.2.1",
     "react-native-vimeo-iframe": "^1.2.1",
+    "react-native-web": "~0.18.10",
     "react-native-webview": "11.26.0",
     "react-native-youtube-iframe": "^2.2.2",
     "typescript": "^4.9.4",
