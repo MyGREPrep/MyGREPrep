@@ -35,6 +35,9 @@ export class User extends BaseEntity {
   @OneToMany(() => Mocktestscore, (mockTestScore) => mockTestScore.userId)
   mockTestScores: Mocktestscore[];
 
+  @Column({ default: false })
+  isPremium: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 

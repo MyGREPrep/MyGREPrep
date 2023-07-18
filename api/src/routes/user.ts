@@ -3,6 +3,7 @@ import {
   changePassword,
   forgotPassword,
   registerUser,
+  upgradeToPremium,
   users,
   verifyOtp,
 } from "../controllers/userController";
@@ -14,5 +15,6 @@ userRouter.get("/users", users);
 userRouter.get("/forgot-password", forgotPassword);
 userRouter.get("/change-password", changePassword);
 userRouter.get("/verify-otp", verifyOtp);
+userRouter.post("/premium", upgradeToPremium);
 
 export default userRouter;

@@ -144,7 +144,43 @@ const changePassword = async (req: Request, res: Response) => {
   });
 };
 
+const upgradeToPremium = async (req: Request, res: Response) => {
+  const userEmail = req.body.email;
+  try {
+    // Find the user in the database based on their email
+    const user = await User.findOne({ where: { email: userEmail } });
+    if (!user) {
+      return res.status(500).json({
+        status: false,
+        payload: {
+          message: "User does not exist",
+        },
+      });
+    }
 
+    // mock the payment processing and verification
 
+    await User.update({ email: user.email }, { isPremium: true });
 
-export { registerUser, users, forgotPassword, changePassword, verifyOtp };
+    return res.status(201).json({
+      status: true,
+      payload: {
+        message: "User upgraded to premium successfully",
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: false,
+      payload: { message: "Failed to upgrade user to premium." },
+    });
+  }
+};
+
+export {
+  registerUser,
+  upgradeToPremium,
+  users,
+  forgotPassword,
+  changePassword,
+  verifyOtp,
+};
