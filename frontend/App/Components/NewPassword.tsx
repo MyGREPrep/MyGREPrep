@@ -6,10 +6,14 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert,
 } from "react-native";
 import SnackBar from "react-native-snackbar-component";
+import { BACKEND_URL } from "../constants";
+import { useOtp } from "../state/useOtp";
 
 const NewPassword = () => {
+  const otp = useOtp((state) => state.otp);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(false);
@@ -18,21 +22,43 @@ const NewPassword = () => {
   const navigation = useNavigation();
 
   const handleChangePassword = () => {
-    if (password !== '' && password === confirmPassword) {
-      // Passwords match, call change password API
-      console.log("Password changed successfully!");
-      setSuccess(true);
-    }else if(password === '' && confirmPassword ===''){
+    if (password !== "" && password === confirmPassword) {
+      fetch(`${BACKEND_URL}/user/change-password`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ code: otp, password: password }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("data", data);
+          if (data.status) {
+            setSuccess(true);
+            // TODO: update firebase store here -> @luqmaan
+            // Navigate to Verify OTP screen
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [{ name: "VerifyOTP" }],
+              })
+            );
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          Alert.alert("Error", "An error occurred. Please try again later.");
+        });
+    } else if (password === "" && confirmPassword === "") {
       setError(true);
       setErrorMsg("Password cannot be empty");
-    } 
-    else {
+    } else {
       // Passwords do not match, show an error message or take appropriate action
       setError(true);
       setErrorMsg("Passwords do not match!");
     }
   };
-console.log("ERR",errMsg)
+  console.log("ERR", errMsg);
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Enter New passowrd</Text>
@@ -92,11 +118,11 @@ console.log("ERR",errMsg)
           actionHandler={() => {
             setSuccess(false);
             navigation.dispatch(
-                CommonActions.reset({
-                  index: 0,
-                  routes: [{ name: "Login" }],
-                })
-              );
+              CommonActions.reset({
+                index: 0,
+                routes: [{ name: "Login" }],
+              })
+            );
           }}
           accentColor="#FFFFFF"
           actionText="okay"

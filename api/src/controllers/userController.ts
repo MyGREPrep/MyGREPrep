@@ -70,7 +70,7 @@ const forgotPassword = async (req: Request, res: Response) => {
     FORGET_PASSWORD_PREFIX + code,
     user.id,
     "EX",
-    1000 * 60 * 60 * 24 * 3 // 3 days expiry
+    10800 // 3 hours expiry
   );
 
   // now send the email
