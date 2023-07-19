@@ -11,9 +11,13 @@ import {
 import SnackBar from "react-native-snackbar-component";
 import { BACKEND_URL } from "../constants";
 import { useOtp } from "../state/useOtp";
+import { useEmailForChangePass } from "../state/useEmailForChangePass";
 
 const NewPassword = () => {
   const otp = useOtp((state) => state.otp);
+  const emailForChangePassword = useEmailForChangePass(
+    (state) => state.emailForChangePassword
+  );
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(false);
@@ -35,7 +39,11 @@ const NewPassword = () => {
           console.log("data", data);
           if (data.status) {
             setSuccess(true);
+            // --------
             // TODO: update firebase store here -> @luqmaan
+            // you can get email from variable: emailForChangePassword
+            // --------
+            console.log(emailForChangePassword);
             // Navigate to Verify OTP screen
             navigation.dispatch(
               CommonActions.reset({

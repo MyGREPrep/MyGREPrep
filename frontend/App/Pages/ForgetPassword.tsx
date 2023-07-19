@@ -13,10 +13,14 @@ import {
 import { useEmail } from "../state/useEmail";
 import { BACKEND_URL } from "../constants";
 import SnackBar from "react-native-snackbar-component";
+import { useEmailForChangePass } from "../state/useEmailForChangePass";
 
 const ForgetPassword = ({}) => {
   const [email, setEmail] = useState("");
   const [isEmailSuccess, setIsEmailSuccess] = useState(false);
+  const addEmailForChangePassword = useEmailForChangePass(
+    (state) => state.addEmailForChangePassword
+  );
   const navigation = useNavigation();
 
   const handleSubmit = () => {
@@ -32,6 +36,7 @@ const ForgetPassword = ({}) => {
         console.log("data", data);
         if (data.status) {
           setIsEmailSuccess(true);
+          addEmailForChangePassword(email);
           // Navigate to Verify OTP screen
           navigation.dispatch(
             CommonActions.reset({
