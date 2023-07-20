@@ -13,7 +13,7 @@ const getRewards = async (req: Request, res: Response) => {
     });
   }
 
-  console.log(user)
+  console.log(user);
 
   return res.status(201).json({
     status: true,
@@ -59,4 +59,52 @@ const addRewards = async (req: Request, res: Response) => {
   });
 };
 
-export { getRewards, addRewards };
+const removeRewards = async (req: Request, res: Response) => {
+  const userEmail = req.body.email;
+  // by how many points to reduce
+  const points = req.body.points;
+  const dataSource = req.app.locals.context.dataSource;
+  const user = await User.findOne({ where: { email: userEmail } });
+
+  if (!user) {
+    return res.status(500).json({
+      status: false,
+      payload: {
+        message: "User does not exist",
+      },
+    });
+  }
+
+  try {
+    if (user.rewards < points) {
+      await dataSource.query(
+        `
+          update "user"
+          set rewards = 0
+          where email = $1
+          `,
+        [userEmail]
+      );
+    } else {
+      await dataSource.query(
+        `
+          update "user"
+          set rewards = rewards - $1
+          where email = $2
+          `,
+        [points, userEmail]
+      );
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(201).json({
+      status: false,
+    });
+  }
+
+  return res.status(201).json({
+    status: true,
+  });
+};
+
+export { getRewards, addRewards, removeRewards };
