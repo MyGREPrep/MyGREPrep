@@ -35,7 +35,7 @@ const NewPassword = () => {
 console.log("ERR",errMsg)
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Enter New passowrd</Text>
+      <Text style={styles.heading}>Enter New Password</Text>
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
