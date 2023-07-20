@@ -29,7 +29,7 @@ export class User extends BaseEntity {
   @Column({ type: "bigint", nullable: true })
   phoneNumber: number | null;
 
-  @Column({ type: "int", default: 10 })
+  @Column({ type: "int", default: 200 })
   rewards!: number;
 
   @OneToMany(() => Mocktestscore, (mockTestScore) => mockTestScore.userId)
