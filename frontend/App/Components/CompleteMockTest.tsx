@@ -8,12 +8,18 @@ import {
   TouchableOpacity,
   Modal,
   Animated,
+  StyleSheet,
 } from "react-native";
 import { BACKEND_URL, COLORS, SIZES } from "../constants";
 import data from "../QuizData/RatioQuiz";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import Colors from "../Shared/Colors";
-import { CommonActions, DrawerActions, useNavigation } from "@react-navigation/native";
+import {
+  CommonActions,
+  DrawerActions,
+  useNavigation,
+} from "@react-navigation/native";
+import { auth } from "../../firebase";
+import NoRewards from "./NoRewards";
 
 const CompleteMockTest = ({ route }) => {
   const [questions, setQuestions] = useState([]);
@@ -41,6 +47,28 @@ const CompleteMockTest = ({ route }) => {
   const [score, setScore] = useState(0);
   const [showNextButton, setShowNextButton] = useState(false);
   const [showScoreModal, setShowScoreModal] = useState(false);
+  const [rewards, setRewards] = React.useState<number | null>(null);
+
+  React.useEffect(() => {
+    // API call to fetch rewards
+    fetch(`${BACKEND_URL}/rewards/get-rewards`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userEmail: auth.currentUser.email,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Rewards",rewards)
+        setRewards(data.payload.reward);
+      })
+      .catch((error) => {
+        console.error("Error fetching topics:", error);
+      });
+  },[]);
   const validateAnswer = (selectedOption) => {
     let correct_option = allQuestions[currentQuestionIndex]["correctOption"];
     setCurrentOptionSelected(selectedOption);
@@ -70,6 +98,22 @@ const CompleteMockTest = ({ route }) => {
       duration: 1000,
       useNativeDriver: false,
     }).start();
+  };
+  const handleRemoveRewards = () => {
+    fetch(`${BACKEND_URL}/rewards/remove-rewards`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: auth.currentUser.email, points: 150 }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Removed test reward", data);
+      })
+      .catch((error) => {
+        console.error("Error removing rewards:", error);
+      });
   };
   const restartQuiz = () => {
     setShowScoreModal(false);
@@ -266,144 +310,184 @@ const CompleteMockTest = ({ route }) => {
   };
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-      }}
-    >
-      <StatusBar barStyle="light-content" backgroundColor={COLORS.primary} />
-      <View
-        style={{
-          flex: 1,
-          paddingVertical: 40,
-          paddingHorizontal: 16,
-
-          position: "relative",
-        }}
-      >
-        {/* ProgressBar */}
-        {renderProgressBar()}
-
-        {/* Question */}
-        {renderQuestion()}
-
-        {/* Options */}
-        {renderOptions()}
-
-        {/* Next Button */}
-        {renderNextButton()}
-
-        {/* Score Modal */}
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={showScoreModal}
+    <>
+      {rewards > 150 ? (
+        <SafeAreaView
+          style={{
+            flex: 1,
+          }}
         >
+          <StatusBar
+            barStyle="light-content"
+            backgroundColor={COLORS.primary}
+          />
           <View
             style={{
               flex: 1,
-              backgroundColor: COLORS.primary,
-              alignItems: "center",
-              justifyContent: "center",
+              paddingVertical: 40,
+              paddingHorizontal: 16,
+
+              position: "relative",
             }}
           >
-            <View
-              style={{
-                backgroundColor: COLORS.white,
-                width: "90%",
-                borderRadius: 20,
-                padding: 20,
-                alignItems: "center",
-              }}
-            >
-              <Text style={{ fontSize: 30, fontWeight: "bold" }}>
-                {score > allQuestions.length / 2 ? "Congratulations!" : "Oops!"}
-              </Text>
+            {/* ProgressBar */}
+            {renderProgressBar()}
 
+            {/* Question */}
+            {renderQuestion()}
+
+            {/* Options */}
+            {renderOptions()}
+
+            {/* Next Button */}
+            {renderNextButton()}
+
+            {/* Score Modal */}
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={showScoreModal}
+            >
               <View
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "flex-start",
+                  flex: 1,
+                  backgroundColor: COLORS.primary,
                   alignItems: "center",
-                  marginVertical: 20,
+                  justifyContent: "center",
                 }}
               >
-                <Text
+                <View
                   style={{
-                    fontSize: 30,
-                    color:
-                      score > allQuestions.length / 2
-                        ? COLORS.success
-                        : COLORS.error,
+                    backgroundColor: COLORS.white,
+                    width: "90%",
+                    borderRadius: 20,
+                    padding: 20,
+                    alignItems: "center",
                   }}
                 >
-                  {score}
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 20,
-                    color: COLORS.black,
-                    paddingLeft: 8,
-                  }}
-                >
-                  / {allQuestions.length}
-                </Text>
+                  <Text style={{ fontSize: 30, fontWeight: "bold" }}>
+                    {score > allQuestions.length / 2
+                      ? "Congratulations!"
+                      : "Oops!"}
+                  </Text>
+
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                      marginVertical: 20,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 30,
+                        color:
+                          score > allQuestions.length / 2
+                            ? COLORS.success
+                            : COLORS.error,
+                      }}
+                    >
+                      {score}
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        color: COLORS.black,
+                        paddingLeft: 8,
+                      }}
+                    >
+                      / {allQuestions.length}
+                    </Text>
+                  </View>
+                  {/* Retry Quiz button */}
+                  {rewards < 150 ? (
+                    <TouchableOpacity
+                      onPress={restartQuiz}
+                      style={{
+                        backgroundColor: "#0782F9",
+                        width: "100%",
+                        padding: 15,
+                        borderRadius: 10,
+                        alignItems: "center",
+                        marginTop: 5,
+                        borderColor: "#0782F9",
+                        borderWidth: 2,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          color: "white",
+                          fontWeight: "700",
+                          fontSize: 16,
+                        }}
+                      >
+                        Retry
+                      </Text>
+                    </TouchableOpacity>
+                  ) : (
+                    ""
+                  )}
+
+                  <TouchableOpacity
+                    onPress={() => {
+                      handleRemoveRewards();
+                      setShowScoreModal(false);
+                      navigation.dispatch(
+                        CommonActions.reset({
+                          index: 0,
+                          routes: [{ name: "MyGREPrep" }],
+                        })
+                      );
+                    }}
+                    style={{
+                      backgroundColor: "#0782F9",
+                      width: "100%",
+                      padding: 15,
+                      borderRadius: 10,
+                      alignItems: "center",
+                      marginTop: 25,
+                      borderColor: "#0782F9",
+                      borderWidth: 2,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: "white",
+                        fontWeight: "400",
+                        fontSize: 16,
+                      }}
+                    >
+                      Go Back
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </View>
-              {/* Retry Quiz button */}
-              <TouchableOpacity
-                onPress={restartQuiz}
-                style={{
-                  backgroundColor: "#0782F9",
-                  width: "100%",
-                  padding: 15,
-                  borderRadius: 10,
-                  alignItems: "center",
-                  marginTop: 5,
-                  borderColor: "#0782F9",
-                  borderWidth: 2,
-                }}
-              >
-                <Text
-                  style={{ color: "white", fontWeight: "700", fontSize: 16 }}
-                >
-                  Retry
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-               onPress={() => {
-                setShowScoreModal(false);
-                navigation.dispatch(
-                  CommonActions.reset({
-                    index: 0,
-                    routes: [{ name: "MyGREPrep" }],
-                  })
-                );
-              
-            
-            }}
-                style={{
-                  backgroundColor: "#0782F9",
-                  width: "100%",
-                  padding: 15,
-                  borderRadius: 10,
-                  alignItems: "center",
-                  marginTop: 5,
-                  borderColor: "#0782F9",
-                  borderWidth: 2,
-                }}
-              >
-                <Text
-                  style={{ color: "white", fontWeight: "700", fontSize: 16 }}
-                >
-                  Go Back
-                </Text>
-              </TouchableOpacity>
-            </View>
+            </Modal>
           </View>
-        </Modal>
-      </View>
-    </SafeAreaView>
+        </SafeAreaView>
+      ) : (
+        <NoRewards />
+      )}
+    </>
   );
 };
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  description: {
+    fontSize: 16,
+    textAlign: "center",
+  },
+});
 
 export default CompleteMockTest;

@@ -4,11 +4,29 @@ import Quiz from "./Quiz";
 import Video from "react-native-video";
 import YoutubePlayer from "react-native-youtube-iframe";
 import { LogBox } from 'react-native';
+import { BACKEND_URL } from "../constants";
+import { auth } from "../../firebase";
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
 ]);
 
+const handleAddRewards = () =>{
+  fetch(`${BACKEND_URL}/rewards/add-rewards`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email: auth.currentUser.email, rewards:20 }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Added video reward",data)
+    })
+    .catch((error) => {
+      console.error("Error adding rewards:", error);
+    });
+}
 function TopicDetails({ route }) {
   const { topics, navigation } = route.params;
   const [playing, setPlaying] = React.useState(false);
@@ -16,6 +34,7 @@ function TopicDetails({ route }) {
   const onStateChange = React.useCallback((state) => {
     if (state === "ended") {
       setPlaying(false);
+      handleAddRewards();
     }
   }, []);
 
