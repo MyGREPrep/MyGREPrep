@@ -34,7 +34,7 @@ const Registration = () => {
       // Replace 'your-api-endpoint' with the actual endpoint to store user data
       const userCredentials = await createUserWithEmailAndPassword(
         auth,
-        email,
+        email.trim().toLowerCase(),
         password
       );
 
@@ -97,7 +97,7 @@ const Registration = () => {
       />
       <TextInput
         placeholder="Email"
-        value={email.trim().toLowerCase()}
+        value={email}
         onChangeText={(text) => setEmail(text)}
         style={styles.input}
       />

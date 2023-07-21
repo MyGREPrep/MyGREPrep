@@ -83,7 +83,7 @@ const Tips = () => {
           </View>
         </ScrollView>
       ) : (
-        <View style={styles.container}>
+        <View style={styles.OtherContainer}>
           <Text style={styles.title}>Opps!</Text>
           <Text style={styles.description}>
             Sorry, you do not have enough reward points to access this page.
@@ -135,6 +135,12 @@ const Tips = () => {
 const styles = StyleSheet.create({
   contentContainer: {
     flexGrow: 1,
+  },
+  OtherContainer: {
+    flex: 1,
+    padding: 20,
+    justifyContent: "center",
+    alignItems: "center",
   },
   container: {
     //flex: 1,
