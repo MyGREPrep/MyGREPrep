@@ -27,7 +27,7 @@ const addRewards = async (req: Request, res: Response) => {
   const userEmail = req.body.email;
   const rewards = req.body.rewards;
   const dataSource = req.app.locals.context.dataSource;
-  const user = await User.find({ where: { email: userEmail } });
+  const user = await User.findOne({ where: { email: userEmail } });
 
   if (!user) {
     return res.status(500).json({
@@ -49,13 +49,18 @@ const addRewards = async (req: Request, res: Response) => {
     );
   } catch (error) {
     console.log(error);
-    return res.status(201).json({
+    return res.status(500).json({
       status: false,
     });
   }
 
+  const newUser = await User.findOne({ where: { email: userEmail } });
+
   return res.status(201).json({
     status: true,
+    payload: {
+      reward: newUser?.rewards,
+    },
   });
 };
 
@@ -97,13 +102,18 @@ const removeRewards = async (req: Request, res: Response) => {
     }
   } catch (error) {
     console.log(error);
-    return res.status(201).json({
+    return res.status(500).json({
       status: false,
     });
   }
 
+  const newUser = await User.findOne({ where: { email: userEmail } });
+
   return res.status(201).json({
     status: true,
+    payload: {
+      reward: newUser?.rewards,
+    },
   });
 };
 

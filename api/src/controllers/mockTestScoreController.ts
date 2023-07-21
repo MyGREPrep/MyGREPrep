@@ -1,29 +1,44 @@
 import { Request, Response } from "express";
 import { Mocktestscore } from "../entities/MockTestScore";
+import { User } from "../entities/User";
 
 const createMockTestScore = async (req: Request, res: Response) => {
-    const score = req.body.score;
-    const userId = req.body.userId;
+  const score = req.body.score;
+  const email = req.body.email;
 
-    const mockTestScore = await Mocktestscore.save({
-        userId,
-        score
-    })
+  const user = await User.findOne({
+    where: {
+      email,
+    },
+  });
 
-    if (mockTestScore) {
-        return res.status(500).json({
-            status: true,
-            payload: {
-                mockTestScore
-            }
-        })
-    }
+  if (!user) {
+    return res.status(500).json({
+      status: false,
+      payload: {
+        message: "User does not exist",
+      },
+    });
+  }
 
+  const mockTestScore = await Mocktestscore.save({
+    userId: user.id,
+    score,
+  });
+
+  if (mockTestScore) {
     return res.status(201).json({
-        status: false,
-    })
-}
+      status: true,
+      payload: {
+        mockTestScore,
+        reward: user.rewards,
+      },
+    });
+  }
 
-export {
-    createMockTestScore
-}
+  return res.status(500).json({
+    status: false,
+  });
+};
+
+export { createMockTestScore };

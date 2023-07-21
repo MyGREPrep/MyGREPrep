@@ -19,19 +19,12 @@ import {
   useNavigation,
 } from "@react-navigation/native";
 import { auth } from "../../firebase";
-import NoRewards from "./NoRewards";
+import { useRewards } from "../state/useRewards";
+import { ScrollView } from "react-native-gesture-handler";
 
 const CompleteMockTest = ({ route }) => {
   const [questions, setQuestions] = useState([]);
-  useEffect(() => {
-    fetchQuestionsFromAPI()
-      .then((data) => {
-        setQuestions(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+
   const fetchQuestionsFromAPI = async () => {
     // Fetch questions from API endpoint
     const response = await fetch(`${BACKEND_URL}/question/generate-mock-test`);
@@ -48,9 +41,21 @@ const CompleteMockTest = ({ route }) => {
   const [showNextButton, setShowNextButton] = useState(false);
   const [showScoreModal, setShowScoreModal] = useState(false);
   const [rewards, setRewards] = React.useState<number | null>(null);
+  console.log("Questions", allQuestions);
+  const rewardsState = useRewards((state) => state.rewards);
+  const addRewards = useRewards((state) => state.addRewards);
+  console.log("HERE");
+  useEffect(() => {
+    fetchQuestionsFromAPI()
+      .then((data) => {
+        setQuestions(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [rewardsState]);
 
-  React.useEffect(() => {
-    // API call to fetch rewards
+  const getRewards = () => {
     fetch(`${BACKEND_URL}/rewards/get-rewards`, {
       method: "POST",
       headers: {
@@ -62,13 +67,36 @@ const CompleteMockTest = ({ route }) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Rewards",rewards)
-        setRewards(data.payload.reward);
+        console.log("second: ", data.payload.reward);
+        addRewards(parseInt(data.payload.reward));
       })
       .catch((error) => {
         console.error("Error fetching topics:", error);
       });
-  },[]);
+  };
+  React.useEffect(() => {
+    // API call to fetch rewards
+    // fetch(`${BACKEND_URL}/rewards/get-rewards`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     userEmail: auth.currentUser.email,
+    //   }),
+    // })
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     console.log("Rewards", rewards);
+    //     // setRewards(data.payload.reward);
+    //     addRewards(parseInt(data.payload.reward));
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error fetching topics:", error);
+    //   });
+    getRewards();
+  }, [rewardsState]);
+  console.log("RRR", rewardsState);
   const validateAnswer = (selectedOption) => {
     let correct_option = allQuestions[currentQuestionIndex]["correctOption"];
     setCurrentOptionSelected(selectedOption);
@@ -76,16 +104,36 @@ const CompleteMockTest = ({ route }) => {
     setIsOptionsDisabled(true);
     if (selectedOption == correct_option) {
       // Set Score
-      setScore(score + 1);
+      setScore(score + 34);
     }
     // Show Next Button
     setShowNextButton(true);
+  };
+  const handleScoreForLeaderboard = () => {
+    fetch(`${BACKEND_URL}/mocktest/create-score`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: auth.currentUser.email,
+        score: score,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        addRewards(data.payload.reward);
+      })
+      .catch((error) => {
+        console.error("Error updating score:", error);
+      });
   };
   const handleNext = () => {
     if (currentQuestionIndex == allQuestions.length - 1) {
       // Last Question
       // Show Score Modal
       setShowScoreModal(true);
+      handleScoreForLeaderboard();
     } else {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setCurrentOptionSelected(null);
@@ -109,6 +157,8 @@ const CompleteMockTest = ({ route }) => {
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log("FRD", data.payload.reward);
+        addRewards(parseInt(data.payload.reward));
         console.log("Removed test reward", data);
       })
       .catch((error) => {
@@ -175,7 +225,7 @@ const CompleteMockTest = ({ route }) => {
   };
   const renderOptions = () => {
     return (
-      <View>
+      <ScrollView>
         {allQuestions[currentQuestionIndex]?.options.map((option) => (
           <TouchableOpacity
             onPress={() => validateAnswer(option)}
@@ -248,7 +298,7 @@ const CompleteMockTest = ({ route }) => {
             ) : null}
           </TouchableOpacity>
         ))}
-      </View>
+      </ScrollView>
     );
   };
   const renderNextButton = () => {
@@ -311,7 +361,7 @@ const CompleteMockTest = ({ route }) => {
 
   return (
     <>
-      {rewards > 150 ? (
+      {rewardsState >= 150 ? (
         <SafeAreaView
           style={{
             flex: 1,
@@ -397,42 +447,14 @@ const CompleteMockTest = ({ route }) => {
                         paddingLeft: 8,
                       }}
                     >
-                      / {allQuestions.length}
+                      / 340
                     </Text>
                   </View>
-                  {/* Retry Quiz button */}
-                  {rewards < 150 ? (
-                    <TouchableOpacity
-                      onPress={restartQuiz}
-                      style={{
-                        backgroundColor: "#0782F9",
-                        width: "100%",
-                        padding: 15,
-                        borderRadius: 10,
-                        alignItems: "center",
-                        marginTop: 5,
-                        borderColor: "#0782F9",
-                        borderWidth: 2,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          color: "white",
-                          fontWeight: "700",
-                          fontSize: 16,
-                        }}
-                      >
-                        Retry
-                      </Text>
-                    </TouchableOpacity>
-                  ) : (
-                    ""
-                  )}
-
                   <TouchableOpacity
                     onPress={() => {
                       handleRemoveRewards();
                       setShowScoreModal(false);
+                      getRewards();
                       navigation.dispatch(
                         CommonActions.reset({
                           index: 0,
@@ -467,7 +489,34 @@ const CompleteMockTest = ({ route }) => {
           </View>
         </SafeAreaView>
       ) : (
-        <NoRewards />
+        <View style={styles.container}>
+          <Text style={styles.title}>Opps!</Text>
+          <Text style={styles.description}>
+            Sorry, you do not have enough reward points to access this page.
+            Please complete more videos to gain more reward points.
+          </Text>
+          <TouchableOpacity
+            onPress={() => {
+              console.log("Pressed");
+              getRewards();
+              navigation.goBack();
+            }}
+            style={{
+              backgroundColor: "#0782F9",
+              width: "70%",
+              padding: 15,
+              borderRadius: 10,
+              alignItems: "center",
+              marginTop: 35,
+              borderColor: "#0782F9",
+              borderWidth: 2,
+            }}
+          >
+            <Text style={{ color: "white", fontWeight: "700", fontSize: 16 }}>
+              Go Back
+            </Text>
+          </TouchableOpacity>
+        </View>
       )}
     </>
   );

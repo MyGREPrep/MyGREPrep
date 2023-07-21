@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 
 const SectionsScreen = ({ navigation }) => {
@@ -10,9 +17,9 @@ const SectionsScreen = ({ navigation }) => {
         "Assesses your ability to analyze and evaluate written material and synthesize information obtained from it.",
       icon: require("../Assets/Images/idea.png"),
       topics: [
-        "reading comprehension", 
+        "reading comprehension",
         "text completion",
-        "sentence equivalence"
+        "sentence equivalence",
       ],
     },
     {
@@ -31,7 +38,6 @@ const SectionsScreen = ({ navigation }) => {
         "powers",
         "roots",
         "geometry",
-        "data analysis",
       ],
     },
     {
@@ -68,7 +74,7 @@ const SectionsScreen = ({ navigation }) => {
           </View>
         </TouchableOpacity>
       ))}
-     </ScrollView>
+    </ScrollView>
   );
 };
 
