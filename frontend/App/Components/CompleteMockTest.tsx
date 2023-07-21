@@ -76,16 +76,33 @@ const CompleteMockTest = ({ route }) => {
     setIsOptionsDisabled(true);
     if (selectedOption == correct_option) {
       // Set Score
-      setScore(score + 1);
+      setScore(score + 34);
     }
     // Show Next Button
     setShowNextButton(true);
   };
+  const handleScoreForLeaderboard = ()=>{
+    fetch(`${BACKEND_URL}/mocktest/create-score`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: auth.currentUser.email,
+        score:score
+      }),
+    })
+      .then((response) => response.json())
+      .catch((error) => {
+        console.error("Error updating score:", error);
+      });
+  }
   const handleNext = () => {
     if (currentQuestionIndex == allQuestions.length - 1) {
       // Last Question
       // Show Score Modal
       setShowScoreModal(true);
+      handleScoreForLeaderboard();
     } else {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setCurrentOptionSelected(null);

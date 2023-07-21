@@ -3,38 +3,41 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import Quiz from "./Quiz";
 import Video from "react-native-video";
 import YoutubePlayer from "react-native-youtube-iframe";
-import { LogBox } from 'react-native';
+import { LogBox } from "react-native";
 import { BACKEND_URL } from "../constants";
 import { auth } from "../../firebase";
+import { setEnabled } from "react-native/Libraries/Performance/Systrace";
 
 LogBox.ignoreLogs([
-  'Non-serializable values were found in the navigation state',
+  "Non-serializable values were found in the navigation state",
 ]);
 
-const handleAddRewards = () =>{
+const handleAddRewards = () => {
   fetch(`${BACKEND_URL}/rewards/add-rewards`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email: auth.currentUser.email, rewards:20 }),
+    body: JSON.stringify({ email: auth.currentUser.email, rewards: 20 }),
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log("Added video reward",data)
+      console.log("Added video reward", data);
     })
     .catch((error) => {
       console.error("Error adding rewards:", error);
     });
-}
+};
 function TopicDetails({ route }) {
   const { topics, navigation } = route.params;
   const [playing, setPlaying] = React.useState(false);
+  const [enable, setEnable] = React.useState(false);
 
   const onStateChange = React.useCallback((state) => {
     if (state === "ended") {
       setPlaying(false);
       handleAddRewards();
+      setEnable(true);
     }
   }, []);
 
@@ -44,6 +47,7 @@ function TopicDetails({ route }) {
     });
   };
 
+  console.log("Enable",enable)
   return (
     <View style={{ margin: 18 }}>
       <Text style={styles.description}>{topics.description}</Text>
@@ -57,8 +61,9 @@ function TopicDetails({ route }) {
         />
       </View>
       <TouchableOpacity
-        style={styles.startQuizButton}
+        style={enable ? styles.startQuizButton : styles.disableStartQuizButton}
         onPress={handleStartQuiz}
+        disabled={!enable}
       >
         <Text style={styles.startQuizButtonText}>Start Quiz</Text>
       </TouchableOpacity>
@@ -83,6 +88,13 @@ const styles = StyleSheet.create({
   },
   startQuizButton: {
     backgroundColor: "#0782F9",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginTop: 20,
+  },
+  disableStartQuizButton: {
+    backgroundColor: "#A6A0A0",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
