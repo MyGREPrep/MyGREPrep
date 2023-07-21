@@ -2,10 +2,12 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { BACKEND_URL } from "../constants";
 import { useEmail } from "../state/useEmail";
+import { useRewards } from "../state/useRewards";
 
 const Rewards = () => {
   const [rewards, setRewards] = React.useState<number | null>(null);
   const email = useEmail((state) => state.email);
+  const addRewards = useRewards((state) => state.addRewards);
 
   React.useEffect(() => {
     // API call to fetch rewards
@@ -22,6 +24,7 @@ const Rewards = () => {
       .then((data) => {
         console.log("first: ", data.payload.reward);
         setRewards(data.payload.reward);
+        addRewards(data.payload.reward);
       })
       .catch((error) => {
         console.error("Error fetching topics:", error);

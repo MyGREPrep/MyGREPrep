@@ -149,6 +149,8 @@ const generateMockTest = async (req: Request, res: Response) => {
       optionStrings.push(o.option);
     }
 
+    console.log(optionStrings);
+
     const questionWithOption = {
       description: question["0"].description,
       question: question["0"].question,

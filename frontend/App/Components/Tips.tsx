@@ -1,12 +1,21 @@
 import React from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import { BACKEND_URL } from "../constants";
 import { auth } from "../../firebase";
-import NoRewards from "./NoRewards";
+import { useRewards } from "../state/useRewards";
+import { useNavigation } from "@react-navigation/native";
 
 const Tips = () => {
+  const rewardsState = useRewards((state) => state.rewards);
+  const addRewards = useRewards((state) => state.addRewards);
   const [rewards, setRewards] = React.useState<number | null>(null);
-
+  const navigation = useNavigation();
   React.useEffect(() => {
     // API call to fetch rewards
     fetch(`${BACKEND_URL}/rewards/get-rewards`, {
@@ -20,16 +29,17 @@ const Tips = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        setRewards(data.payload.reward);
+        // setRewards(data.payload.reward);
+        addRewards(parseInt(data.payload.reward));
       })
       .catch((error) => {
         console.error("Error fetching topics:", error);
       });
-  },[]);
-  
+  }, [rewardsState]);
+
   return (
     <>
-      {rewards > 150 ? (
+      {rewardsState >= 150 ? (
         <ScrollView contentContainerStyle={styles.contentContainer}>
           <View style={styles.container}>
             <Text style={styles.mainTitle}>Tips</Text>
@@ -73,7 +83,50 @@ const Tips = () => {
           </View>
         </ScrollView>
       ) : (
-        <NoRewards />
+        <View style={styles.container}>
+          <Text style={styles.title}>Opps!</Text>
+          <Text style={styles.description}>
+            Sorry, you do not have enough reward points to access this page.
+            Please complete more videos to gain more reward points.
+          </Text>
+          <TouchableOpacity
+            onPress={() => {
+              console.log("Pressed");
+              fetch(`${BACKEND_URL}/rewards/get-rewards`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  userEmail: auth.currentUser.email,
+                }),
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  // setRewards(data.payload.reward);
+                  addRewards(parseInt(data.payload.reward));
+                })
+                .catch((error) => {
+                  console.error("Error fetching topics:", error);
+                });
+              navigation.goBack();
+            }}
+            style={{
+              backgroundColor: "#0782F9",
+              width: "70%",
+              padding: 15,
+              borderRadius: 10,
+              alignItems: "center",
+              marginTop: 35,
+              borderColor: "#0782F9",
+              borderWidth: 2,
+            }}
+          >
+            <Text style={{ color: "white", fontWeight: "700", fontSize: 16 }}>
+              Go Back
+            </Text>
+          </TouchableOpacity>
+        </View>
       )}
     </>
   );
