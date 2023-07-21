@@ -9,6 +9,7 @@ import {
   Modal,
   Animated,
   StyleSheet,
+  ScrollView,
 } from "react-native";
 import { BACKEND_URL, COLORS, SIZES } from "../constants";
 import data from "../QuizData/RatioQuiz";
@@ -20,7 +21,6 @@ import {
 } from "@react-navigation/native";
 import { auth } from "../../firebase";
 import { useRewards } from "../state/useRewards";
-import { ScrollView } from "react-native-gesture-handler";
 
 const CompleteMockTest = ({ route }) => {
   const [questions, setQuestions] = useState([]);
@@ -184,7 +184,7 @@ const CompleteMockTest = ({ route }) => {
 
   const renderQuestion = () => {
     return (
-      <View
+      <ScrollView
         style={{
           marginVertical: 40,
         }}
@@ -220,7 +220,7 @@ const CompleteMockTest = ({ route }) => {
         >
           {allQuestions[currentQuestionIndex]?.question}
         </Text>
-      </View>
+      </ScrollView>
     );
   };
   const renderOptions = () => {
@@ -371,12 +371,11 @@ const CompleteMockTest = ({ route }) => {
             barStyle="light-content"
             backgroundColor={COLORS.primary}
           />
-          <View
-            style={{
-              flex: 1,
+          <ScrollView
+            contentContainerStyle={{
+              flexGrow: 1,
               paddingVertical: 40,
               paddingHorizontal: 16,
-
               position: "relative",
             }}
           >
@@ -486,7 +485,7 @@ const CompleteMockTest = ({ route }) => {
                 </View>
               </View>
             </Modal>
-          </View>
+          </ScrollView>
         </SafeAreaView>
       ) : (
         <View style={styles.container}>

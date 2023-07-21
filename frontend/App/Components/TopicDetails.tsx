@@ -54,8 +54,12 @@ function TopicDetails({ route }) {
   console.log("Enable", enable);
   return (
     <View style={{ margin: 18 }}>
+      <Text style={styles.text}>Description</Text>
       <Text style={styles.description}>{topics.description}</Text>
-      <Text style={styles.significance}>{topics.significance}</Text>
+      <Text style={styles.text}>Significance</Text>
+      <Text style={styles.significance}>
+        {topics.significance === "MEDUIM" ? "MEDIUM" : topics.significance}
+      </Text>
       <View style={styles.videoContainer}>
         <YoutubePlayer
           height={220}
@@ -77,13 +81,13 @@ function TopicDetails({ route }) {
 const styles = StyleSheet.create({
   description: {
     fontSize: 18,
-    fontWeight: "bold",
     marginTop: 10,
     marginBottom: 5,
   },
   significance: {
-    fontSize: 16,
-    marginBottom: 10,
+    fontSize: 18,
+    marginBottom: 20,
+    marginTop: 10,
   },
   videoContainer: {
     width: "100%",
@@ -109,6 +113,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
+  },
+  text: {
+    fontSize: 20,
+    fontWeight: "bold",
   },
 });
 export default TopicDetails;
