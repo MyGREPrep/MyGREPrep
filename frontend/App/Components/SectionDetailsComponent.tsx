@@ -1,23 +1,36 @@
 import { CommonActions, useNavigation } from "@react-navigation/core";
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity,ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import { BACKEND_URL } from "../constants";
 
 const SectionDetailsComponent = ({ route }) => {
   const { sectionTitle, sectionDescription, sectionTopics, navigation } =
     route.params;
-    const makeFirstCharUppercase = (str: string): string => {
-      if (str.length === 0) {
-        return str;
-      }
+  const makeFirstCharUppercase = (str: string): string => {
+    if (str.length === 0) {
+      return str;
+    }
 
-      const firstChar = str.charAt(0).toUpperCase();
-      const remainingChars = str.slice(1);
-    
-      return firstChar + remainingChars;
-    };
-   
-    
+    if (str === "readingComprehension") {
+      return "Reading Comprehension";
+    } else if (str === "textCompletion") {
+      return "Text Completion";
+    } else if (str === "sentenceEquivalence") {
+      return "Sentence Equivalence";
+    }
+
+    const firstChar = str.charAt(0).toUpperCase();
+    const remainingChars = str.slice(1);
+
+    return firstChar + remainingChars;
+  };
+
   const handleButtonPress = (topic) => {
     // API call to fetch topics
 
@@ -52,23 +65,20 @@ const SectionDetailsComponent = ({ route }) => {
             <TouchableOpacity
               key={index}
               style={styles.topic}
-              onPress={
-                () => {
-                  if(value == 'Issue Section') {
-                    navigation.navigate("IssueSection")
-                  }
-                  else if (value == 'Argument Section') {
-                      navigation.navigate("ArgumentSection")
-                  }
-                  else{
-
-                    handleButtonPress(value)
-                  }
+              onPress={() => {
+                if (value == "Issue Section") {
+                  navigation.navigate("IssueSection");
+                } else if (value == "Argument Section") {
+                  navigation.navigate("ArgumentSection");
+                } else {
+                  handleButtonPress(value);
                 }
-              }
+              }}
             >
               <View style={styles.textContainer}>
-                <Text style={styles.sectionTitle}>{makeFirstCharUppercase(value)}</Text>
+                <Text style={styles.sectionTitle}>
+                  {makeFirstCharUppercase(value)}
+                </Text>
               </View>
             </TouchableOpacity>
           );

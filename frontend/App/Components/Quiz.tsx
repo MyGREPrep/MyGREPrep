@@ -264,8 +264,8 @@ const Quiz = ({ route }) => {
     >
       <StatusBar barStyle="light-content" backgroundColor={COLORS.primary} />
       <ScrollView
-        style={{
-          flex: 1,
+        contentContainerStyle={{
+          flexGrow: 1,
           paddingVertical: 40,
           paddingHorizontal: 16,
 
