@@ -11,7 +11,7 @@ export async function sendEmail(to: string, html: string) {
     service: "gmail",
     auth: {
       user: "mygreprep9@gmail.com",
-      pass: "xuzsjxbjfckluica",
+      pass: "lhrtxhiqwarwuccj",
     },
   });
 
