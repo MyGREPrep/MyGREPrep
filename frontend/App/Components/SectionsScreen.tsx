@@ -26,7 +26,7 @@ const SectionsScreen = ({ navigation }) => {
       icon: require("../Assets/Images/calculator.png"),
       topics: [
         "ratio",
-        "percentage",
+        "percent",
         "fraction",
         "arithmetic",
         "algebra",
