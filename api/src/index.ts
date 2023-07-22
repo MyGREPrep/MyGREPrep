@@ -2,7 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import os from "os";
-import { questionRouter, topicRouter, userRouter } from "./routes";
+import { mainRouter, questionRouter, topicRouter, userRouter } from "./routes";
 import { dataSource } from "./utils/typeORMConfig";
 import Redis from "ioredis";
 import rewardsRouter from "./routes/rewards";
@@ -34,6 +34,14 @@ const main = async () => {
 
     next();
   });
+
+  app.use("/", mainRouter);
+  app.use("/user", userRouter);
+  app.use("/question", questionRouter);
+  app.use("/topic", topicRouter);
+  app.use("/rewards", rewardsRouter);
+  app.use("/mocktest", mockTestRouter);
+  app.use("/leaderboard", leaderboardRouter);
 
   const options = {
     definition: {
@@ -70,13 +78,7 @@ const main = async () => {
 
   const specs = swaggerJsdoc(options);
 
-  app.use("/", swaggerUi.serve, swaggerUi.setup(specs));
-  app.use("/user", userRouter);
-  app.use("/question", questionRouter);
-  app.use("/topic", topicRouter);
-  app.use("/rewards", rewardsRouter);
-  app.use("/mocktest", mockTestRouter);
-  app.use("/leaderboard", leaderboardRouter);
+  app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
 
   app.listen(parseInt(process.env.PORT), () => {
     console.log(
