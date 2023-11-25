@@ -8,6 +8,7 @@ const createTopic = async (req: Request, res: Response) => {
   const description = req.body.description;
   const significance = req.body.significance;
   const videoUrl = req.body.videoUrl;
+  const adUrl = req.body.adUrl;
 
   const topicCreated = await Topic.create({
     type,
@@ -20,6 +21,7 @@ const createTopic = async (req: Request, res: Response) => {
     status: true,
     payload: {
       topic: topicCreated,
+      adUrl
     },
   });
 };
@@ -73,6 +75,7 @@ const getTopic = async (req: Request, res: Response) => {
     description: topic[0].description,
     significance: topic[0].significance,
     videoUrl: topic[0].videoUrl,
+    adUrl:"someADURL",
     quiz: quizQuestionsWithOptions,
   };
 
