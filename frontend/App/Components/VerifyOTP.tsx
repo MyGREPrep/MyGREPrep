@@ -6,51 +6,64 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert,
 } from "react-native";
+import { BACKEND_URL } from "../constants";
+import SnackBar from "react-native-snackbar-component";
+import { useOtp } from "../state/useOtp";
 
 const VerifyOTP = () => {
   const [otp, setOTP] = useState("");
+  const addOtp = useOtp((state) => state.addOtp);
+  const [otpIsVerified, setOtpIsVerified] = useState(false);
+  const [isBadOtp, setIsBadOtp] = useState(false);
   const navigation = useNavigation();
 
   const handleVerifyOTP = async () => {
-    // try {
-      // Make an API call to verify OTP
-    //   const response = await fetch("https://api.example.com/verify-otp", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({ otp }),
-    //   });
-
-      // Handle the API response
-    //   const data = await response.json();
-      // Handle the verification response as needed
-    //   console.log(data);
-    // } catch (error) {
-    //   console.log("Error verifying OTP:", error);
-    // }
-    if(otp!==''){
-        navigation.dispatch(
+    fetch(`${BACKEND_URL}/user/verify-otp`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ code: otp }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("data", data);
+        if (data.status) {
+          setOtpIsVerified(true);
+          addOtp(otp);
+          // Navigate to Verify OTP screen
+          navigation.dispatch(
             CommonActions.reset({
               index: 0,
               routes: [{ name: "NewPassword" }],
             })
           );
-    }
+        }
+
+        if (!data.status) {
+          setIsBadOtp(true);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+
+        Alert.alert("Error", "An error occurred. Please try again later.");
+      });
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Verify OTP</Text>
       <View style={styles.inputContainer}>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter OTP"
-        value={otp}
-        onChangeText={(text) => setOTP(text)}
-        keyboardType="numeric"
-      />
+        <TextInput
+          style={styles.input}
+          placeholder="Enter OTP"
+          value={otp}
+          onChangeText={(text) => setOTP(text)}
+          keyboardType="numeric"
+        />
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={handleVerifyOTP}>
@@ -70,6 +83,36 @@ const VerifyOTP = () => {
           <Text style={styles.buttonOutlineText}>Cancel</Text>
         </TouchableOpacity>
       </View>
+
+      {otpIsVerified ? (
+        <SnackBar
+          visible={true}
+          textMessage={"Otp is valid and verified!"}
+          backgroundColor="#008000"
+          // actionHandler={() => {
+          //   setError(false);
+          // }}
+          accentColor="#FFFFFF"
+          actionText="okay"
+        />
+      ) : (
+        ""
+      )}
+
+      {isBadOtp ? (
+        <SnackBar
+          visible={true}
+          textMessage={"Otp is not valid!"}
+          backgroundColor="#FF0000"
+          // actionHandler={() => {
+          //   setError(false);
+          // }}
+          accentColor="#FFFFFF"
+          actionText="okay"
+        />
+      ) : (
+        ""
+      )}
     </View>
   );
 };
